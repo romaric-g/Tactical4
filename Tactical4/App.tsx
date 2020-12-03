@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   },
   navItem: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#04091B',
