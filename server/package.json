@@ -1,0 +1,49 @@
+{
+  "name": "tactical4-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts",
+    "serve": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romaric-g/UnoDeLaNuit-server.git"
+  },
+  "author": "Antoine Tardivel, Romaric Gauzi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/romaric-g/UnoDeLaNuit-server/issues"
+  },
+  "homepage": "https://github.com/romaric-g/UnoDeLaNuit-server#readme",
+  "dependencies": {
+    "@types/component-emitter": "^1.2.10",
+    "@types/cookie": "^0.4.0",
+    "@types/cors": "^2.8.8",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6",
+    "socket.io": "^3.0.1",
+    "ts-node": "^9.0.0",
+    "tsc-watch": "^4.2.9"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/node": "^14.14.7",
+    "@types/socket.io": "^2.1.11",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "typescript": "^4.0.5",
+    "typescript-eslint-parser": "^22.0.0"
+  }
+}
