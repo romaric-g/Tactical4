@@ -1,4 +1,5 @@
 import React from 'react';
+import Puissance4 from './components/puissance4';
 import { AppLoading } from 'expo';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { useFonts, SuezOne_400Regular } from '@expo-google-fonts/suez-one';
@@ -14,7 +15,6 @@ const App = () => {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
-
   return (
     <NativeRouter>
       <StatusBar hidden />
@@ -39,7 +39,10 @@ const styles = StyleSheet.create({
   },
   navItem: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#04091B',
     padding: 10
   },
   subNavItem: {
