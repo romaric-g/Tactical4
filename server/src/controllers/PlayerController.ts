@@ -38,28 +38,6 @@ class PlayerController {
          code: room.code
       })
    }
-   
-   setRoomSetting (params: Models.SetRoomSettingParams, callback: (res: Models.SocketResponse) => void) {
-      const room = this.player.getRoom()
-      const settings = params.settings;
-      if (room && settings) {
-         room.setRoomSettings(settings);
-         return callback({ success: true })
-      }
-      return callback({ success: false })
-   }
-
-   getRoomSetting (params: null, callback: (res: Models.GetRoomSettingResponse) => void) {
-      const room = this.player.getRoom()
-      if (room) {
-         return callback({
-            success: true,
-            settings: room.getRoomSettings()
-         })
-      }
-      return callback({ success: false })
-   }
-
 }
 
 export default PlayerController;

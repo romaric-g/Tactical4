@@ -2,19 +2,13 @@ import Models from "./types/models";
 import Player from "./Player";
 import RoomManager from "./RoomManager";
 
-const defaultSettings = { 
-    public: false
-}
-
 export default class Room {
     public readonly code: string;
-    private settings: Models.RoomSettings;
     private players: Player[];
 
-    constructor(code: string, settings: Models.RoomSettings = defaultSettings) {
+    constructor(code: string) {
         this.code = code;
         this.players = [];
-        this.settings = settings;
     }
 
     join(player: Player) : void {
@@ -28,14 +22,6 @@ export default class Room {
         if (this.players.length <= 0) {
             RoomManager.deleteRoom(this)
         }
-    }
-
-    getRoomSettings() {
-        return this.settings;
-    }
-
-    setRoomSettings(settings: Models.RoomSettings) {
-        this.settings = settings;
     }
 
     onDelete() {

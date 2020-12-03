@@ -20,8 +20,6 @@ export default class Player {
 
         this.socket.on('JoinRoom', playerController.joinRoom);
         this.socket.on('CreateRoom', playerController.createRoom);
-        this.socket.on('SetRoomSetting', playerController.setRoomSetting)
-        this.socket.on('GetRoomSetting', playerController.getRoomSetting)
     }
 
     setName(name: string) : void {
