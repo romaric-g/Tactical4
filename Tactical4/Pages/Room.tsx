@@ -1,18 +1,47 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, View, TextInput, ImageBackground, Image, Text, TouchableOpacity  } from 'react-native';
-import { withRouter } from 'react-router-native';
+import { useHistory, useParams, withRouter } from 'react-router-native';
 import Button from '../Components/Button';
+import socket from '../connection';
+import Models from '../types/models';
 
 const image = require('../assets/tactical4background.png');
 const logo = require('../assets/logo.png');
 
-
 const Room = () => {
+    const history = useHistory();
 
-    const [ GameId, setGameId ] = React.useState("DHJXNJ");
-    const [ Copied, setCopied ] = React.useState(false);
-    const textRef = React.useRef<TextInput>(null);
+    const params = useParams() as {[key: string]: string};
+    const [ playersName, setPlayersName ] = React.useState<(string | undefined)[]>([]);
 
+    React.useEffect(() => {
+        
+        socket.emit("GetRoomInfo", null, (res: Models.GetRoomInfoResponse) => {
+            console.log(res)
+            if (res.success) {
+                setPlayersName(res.playersName)
+            }
+        })
+        
+        socket.on("RoomPlayerListChange", (event: Models.RoomPlayerListChangeEvent) => {
+            setPlayersName(event.playersName);
+        })
+
+        socket.on("RoomStart", (event: Models.RoomStartEvent) => {
+            history.push("/game")
+        })
+    }, []);
+
+    
+    const canStart = React.useMemo(() => playersName.length == 2, [playersName])
+
+    const startRoom = React.useCallback(() => {
+        if (canStart) {
+            socket.emit("StartRoom", null, (res: Models.SocketResponse) => {
+                console.log(res)
+            })
+        }
+    }, [canStart])
     
     const focusTextInput = React.useCallback( () => {
         console.log(textRef.current.value);
@@ -23,16 +52,20 @@ const Room = () => {
             <ImageBackground source={image} style={styles.image}>
                 <Image source={logo} style={styles.logo} />
                 <View style={styles.pageContent}>
-                    <Text style={styles.counterPlayer}>Joueur[1/2]</Text>
-                    <Text style={styles.playerName}>Titouan</Text>
+                    <View>
+                        <Text style={styles.counterPlayer}>Joueurs [{playersName.length}/2]</Text>
+                        {playersName.map((playerName, index) => 
+                            <Text key={index} style={styles.playerName}>{(playerName || "?")}</Text>
+                        )}
+                    </View>
                     <View style={styles.footer}>
                         <View style={styles.containerInput}>
                             <TouchableOpacity onPress={focusTextInput} style={{...styles.input, ...styles.code}}> 
                                 <TextInput
-                                    style={{...styles.input, ...styles.code}}
-                                    placeholder={GameId}
+                                    style={styles.input}
+                                    placeholder={params.code}
                                     placeholderTextColor="#686D7F"
-                                    value = {GameId}
+                                    value = {params.code}
                                     disableFullscreenUI
                                     selectTextOnFocus
                                     ref={textRef}
@@ -48,7 +81,7 @@ const Room = () => {
                                 />
                             </View>
                         </View>
-                        <Button>Joueur en attente...</Button>
+                        <Button onPress={startRoom}>{ !canStart ? "Joueur en attente..." : "Lancer la partie"}</Button>
                     </View>
                 </View>
             </ImageBackground>
@@ -88,7 +121,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 50,
-        width: 270,
+        width: "100%",
         backgroundColor: "#171F3C",
         borderRadius: 14,
         color: "#FFF",
@@ -126,9 +159,6 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'SuezOne_400Regular',
-    },
-    code: {
-        width: "100%"
     },
     footer: {
         width: 270

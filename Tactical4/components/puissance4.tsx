@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Image  } from 'react-native';
 export default function Puissance4() {
 
     let createCircle = ()=> {
-            let nomberCircle = [];
+            let nomberCircle: any[] = [];
             let nomberCol = [];
             for (let i=0; i<9; i++){
                 nomberCol.push(1)
@@ -28,15 +28,13 @@ export default function Puissance4() {
             );
       }
   return (
-    
     <View style={styles.container}>
-            {createCircle()}
-            <Image
-                resizeMode="contain"
-                style={styles.grid} 
-                source={require('../assets/svggrid.png')}
-            />
-    <StatusBar style="auto" />
+      {createCircle()}
+      <Image
+          resizeMode="contain"
+          style={styles.grid} 
+          source={require('../assets/svggrid.png')}
+      />
     </View>
     
   );
