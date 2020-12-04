@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, TextInput, ImageBackground, Image, Text } from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, View, TextInput, ImageBackground, Image, Text, TouchableOpacity  } from 'react-native';
 import { useHistory, useParams, withRouter } from 'react-router-native';
 import Button from '../Components/Button';
 import socket from '../connection';
@@ -9,7 +9,6 @@ const image = require('../assets/tactical4background.png');
 const logo = require('../assets/logo.png');
 
 const Room = () => {
-
     const history = useHistory();
 
     const params = useParams() as {[key: string]: string};
@@ -43,8 +42,11 @@ const Room = () => {
             })
         }
     }, [canStart])
-
-
+    
+    const focusTextInput = React.useCallback( () => {
+        console.log(textRef.current.value);
+    },[textRef]
+    );
     return (
         <View style={styles.container}>
             <ImageBackground source={image} style={styles.image}>
@@ -58,13 +60,18 @@ const Room = () => {
                     </View>
                     <View style={styles.footer}>
                         <View style={styles.containerInput}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder={params.code}
-                                placeholderTextColor="#686D7F"
-                                value = {params.code}
-                            >
-                            </TextInput>
+                            <TouchableOpacity onPress={focusTextInput} style={{...styles.input, ...styles.code}}> 
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder={params.code}
+                                    placeholderTextColor="#686D7F"
+                                    value = {params.code}
+                                    disableFullscreenUI
+                                    selectTextOnFocus
+                                    ref={textRef}
+                                >
+                                </TextInput>
+                            </TouchableOpacity> 
                             <View style={styles.secondePartieInput}>
                                 <View style={styles.traitSeparationInput}></View>
                                 <Image
