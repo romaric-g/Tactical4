@@ -10,12 +10,22 @@ declare namespace Models {
     name: string
   }
 
-  interface PlayerSettings {
-    name: string
+  interface PlayerInfo {
+    name?: string,
+    id: string
   }
 
   interface RoomSettings {
     public: boolean
+  }
+
+  interface GameState {
+    currentPlayer: number,
+    player1?: PlayerInfo,
+    player2?: PlayerInfo,
+    grid: number[][],
+    lastPlacement: { x: number, y: number } | null,
+    score: number[],    
   }
 
   /* Params */
@@ -33,6 +43,9 @@ declare namespace Models {
     settings: RoomSettings
   }
 
+  interface PlayParams {
+    column: number
+  }
 
   /* Response */
   interface CreateRoomResponse extends SocketResponse {
@@ -47,6 +60,9 @@ declare namespace Models {
     playersName: (string | undefined)[]
   }
 
+  interface GetGameStateResponse extends SocketResponse {
+    state?: GameState
+  }
 
   /* Evenement */
 
@@ -58,6 +74,10 @@ declare namespace Models {
     reason: "kick" | "join" | "leave",
     playerName: string | undefined,
     playersName: (string | undefined)[]
+  }
+
+  interface GameStateChangeEvent {
+    state: GameState
   }
 }
 

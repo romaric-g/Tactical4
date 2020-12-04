@@ -1,22 +1,58 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 import Button from '../Components/Button';
 import PlayerInfo from '../Components/PlayerInfo';
 import Puissance4 from '../Components/puissance4';
+import socket from '../connection';
+import Models from '../types/models';
 
 const Game = () => {
+
+    const [ gameState, setGameState ] = React.useState<Models.GameState | null>(null)
+
+    React.useEffect(() => {
+        socket.emit("GetGameState", null, (res: Models.GetGameStateResponse) => {
+            if (res.success && res.state) {
+                setGameState(res.state);
+            }
+        })
+
+        socket.on("GameStateChange", (event: Models.GameStateChangeEvent) => {
+            if (event.state) {
+                setGameState(event.state)
+                console.log(event)
+            }
+        })
+    }, []);
+
+    const currentPlayer = React.useMemo(() => {
+        return gameState?.currentPlayer === 1 ? gameState.player1 : gameState?.player2
+    }, [gameState])
+
+    const canPlay = React.useMemo(() => {
+        return currentPlayer?.id === socket.id;
+    }, [gameState])
+
+    if (!gameState) return (
+        <ActivityIndicator />
+    )
+
     return (
         <View style={styles.container}>
-            <Puissance4 />
+            <Puissance4 
+                grid={gameState.grid} 
+                canPlay={canPlay}
+                currentPlayer={gameState.currentPlayer}
+            />
             <View style={styles.content}>
                 <View style={{width: "100%"}}>
                     <PlayerInfo 
-                        name="Albert"
+                        name={gameState.player1?.name}
                         rank={1}
                         score={1200}
                     />
                     <PlayerInfo 
-                        name="Remi"
+                        name={gameState.player2?.name}
                         rank={2}
                         score={350}
                     />

@@ -57,6 +57,20 @@ class PlayerController {
       }
    }
 
+   getGameState (params: null, callback: (res: Models.GetGameStateResponse) => void) {
+      const room = this.player.getRoom()
+      if (room) {
+         callback({
+            success: true,
+            state: room.getStateInfo()
+         })
+      }else {
+         callback({
+            success: false,
+            message: "Vous n'avez pas rejoint de partie",
+         })
+      }
+   }
 
    startRoom (params: null, callback: (res: Models.SocketResponse) => void) {
       const room = this.player.getRoom()
@@ -65,6 +79,23 @@ class PlayerController {
             callback({success: true})
          } else {
             callback({success: false})
+         }
+      } else {
+         callback({
+            success: false,
+            message: "Vous n'avez pas rejoint de partie"
+         })
+      }
+   }
+
+   play (params: Models.PlayParams, callback: (res: Models.SocketResponse) => void) {
+      const room = this.player.getRoom()
+      if (room) {
+         try {
+            const hasPlay = room.grid.play(params.column, this.player);
+            callback({ success: true})
+         } catch (error) {
+            callback({ success: false, message: error })
          }
       } else {
          callback({

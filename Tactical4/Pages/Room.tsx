@@ -11,6 +11,8 @@ const logo = require('../assets/logo.png');
 const Room = () => {
     const history = useHistory();
 
+    const textRef = React.useRef<TextInput>(null)
+
     const params = useParams() as {[key: string]: string};
     const [ playersName, setPlayersName ] = React.useState<(string | undefined)[]>([]);
 
@@ -41,10 +43,10 @@ const Room = () => {
                 console.log(res)
             })
         }
-    }, [canStart])
+    }, [canStart,])
     
     const focusTextInput = React.useCallback( () => {
-        console.log(textRef.current.value);
+        //console.log(textRef.current.value);
     },[textRef]
     );
     return (
@@ -60,7 +62,7 @@ const Room = () => {
                     </View>
                     <View style={styles.footer}>
                         <View style={styles.containerInput}>
-                            <TouchableOpacity onPress={focusTextInput} style={{...styles.input, ...styles.code}}> 
+                            <TouchableOpacity onPress={focusTextInput} style={styles.input}> 
                                 <TextInput
                                     style={styles.input}
                                     placeholder={params.code}

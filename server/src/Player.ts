@@ -1,7 +1,7 @@
 import PlayerController from "./controllers/PlayerController";
+import Grid from "./Grid";
 import Room from "./Room";
 import Models from "./types/models";
-
 
 export default class Player {
     private socket: any;
@@ -22,6 +22,8 @@ export default class Player {
         this.socket.on('CreateRoom', pc.createRoom.bind(pc));
         this.socket.on('GetRoomInfo', pc.getRoomInfo.bind(pc));
         this.socket.on('StartRoom', pc.startRoom.bind(pc));
+        this.socket.on('GetGameState', pc.getGameState.bind(pc))
+        this.socket.on('Play', pc.play.bind(pc))
     }
 
     setName(name: string) : void {
@@ -44,5 +46,12 @@ export default class Player {
 
     sendEvent<T>(name: string, event: T) {
         this.socket.emit(name, event)
+    }
+
+    toInfo() : Models.PlayerInfo {
+        return {
+            name: this.name,
+            id: this.id
+        }
     }
 }
