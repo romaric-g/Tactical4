@@ -1,6 +1,6 @@
-import Models from "./types/models";
 import PlayerController from "./controllers/PlayerController";
 import Room from "./Room";
+import Models from "./types/models";
 
 
 export default class Player {
@@ -16,10 +16,12 @@ export default class Player {
         this.name = undefined;
         this.room = null;
 
-        const playerController = new PlayerController(this);
+        const pc = new PlayerController(this);
 
-        this.socket.on('JoinRoom', playerController.joinRoom);
-        this.socket.on('CreateRoom', playerController.createRoom);
+        this.socket.on('JoinRoom', pc.joinRoom.bind(pc));
+        this.socket.on('CreateRoom', pc.createRoom.bind(pc));
+        this.socket.on('GetRoomInfo', pc.getRoomInfo.bind(pc));
+        this.socket.on('StartRoom', pc.startRoom.bind(pc));
     }
 
     setName(name: string) : void {
@@ -27,13 +29,20 @@ export default class Player {
     }
 
     setRoom(room: Room | null) : void {
-        if (this.room) {
-            this.room.leave(this)
-        }
         this.room = room;
     }
 
     getRoom() {
         return this.room;
+    }
+
+    onLeave() {
+        if (this.room) {
+            this.room.leave(this)
+        }
+    }
+
+    sendEvent<T>(name: string, event: T) {
+        this.socket.emit(name, event)
     }
 }

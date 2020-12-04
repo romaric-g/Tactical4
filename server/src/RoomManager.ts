@@ -13,9 +13,9 @@ class RoomManager {
     getNewCode() : string {
         let code = '';
         for (let index = 0; index < 6; index++) {
-            code += caracteres[Math.random() * caracteres.length];
+            code += caracteres[Math.floor(Math.random() * caracteres.length)];
         }
-        if (this.rooms[code] !== null) {
+        if (this.rooms[code]) {
             return this.getNewCode();
         } else {
             return code;
@@ -26,7 +26,7 @@ class RoomManager {
         const code = this.getNewCode();
         const room = new Room(code);
         this.rooms[code] = room;
-        player.setRoom(room)
+        room.join(player);
 
         return room;
     }
@@ -37,6 +37,7 @@ class RoomManager {
     }
 
     getRoom(code: string) {
+        console.log(this.rooms)
         return this.rooms[code];
     }
 }

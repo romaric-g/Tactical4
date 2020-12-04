@@ -10,6 +10,7 @@ class PlayerController {
    }
 
    joinRoom (params: Models.JoinRoomParams, callback: (res: Models.SocketResponse) => void) {
+      this.player.setName(params.settings.name);
       if (!params.code) {
          return callback({
             success: false,
@@ -19,7 +20,7 @@ class PlayerController {
       const code = params.code;
       const room = RoomManager.getRoom(code);
       if(room) {
-         this.player.setRoom(room)
+         room.join(this.player)
          return callback({
                success: true
          })
@@ -31,12 +32,46 @@ class PlayerController {
       }
    }
 
-   createRoom (params: null, callback: (res: Models.CreateRoomResponse) => void) {
-      const room = RoomManager.createRoom(this.player);  
+   createRoom (params: Models.CreateRoomParams, callback: (res: Models.CreateRoomResponse) => void) {
+      this.player.setName(params.settings.name);
+      const room = RoomManager.createRoom(this.player);
       callback({
          success: true,
          code: room.code
-      })
+      });
+   }
+
+   getRoomInfo (params: null, callback: (res: Models.GetRoomInfoResponse) => void) {
+      const room = this.player.getRoom()
+      if (room) {
+         callback({
+            success: true,
+            playersName: room.getPlayersName()
+         })
+      } else {
+         callback({
+            success: false,
+            message: "Vous n'avez pas rejoint de partie",
+            playersName: []
+         })
+      }
+   }
+
+
+   startRoom (params: null, callback: (res: Models.SocketResponse) => void) {
+      const room = this.player.getRoom()
+      if (room) {
+         if (room.start()) {
+            callback({success: true})
+         } else {
+            callback({success: false})
+         }
+      } else {
+         callback({
+            success: false,
+            message: "Vous n'avez pas rejoint de partie"
+         })
+      }
    }
 }
 

@@ -21,7 +21,7 @@ const App = () => {
       <StatusBar hidden />
       <View style={styles.container}>
         <Route exact path="/" component={Home} />
-        <Route path="/room" component={Room} />
+        <Route path="/room/:code" component={Room} />
         <Route path="/game" component={Game} />
       </View>
     </NativeRouter>

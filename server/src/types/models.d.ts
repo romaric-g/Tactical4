@@ -25,6 +25,10 @@ declare namespace Models {
     code: string,
   }
 
+  interface CreateRoomParams {
+    settings: PlayerSettings
+  }
+
   interface SetRoomSettingParams {
     settings: RoomSettings
   }
@@ -39,6 +43,22 @@ declare namespace Models {
     settings?: RoomSettings
   }
 
+  interface GetRoomInfoResponse extends SocketResponse {
+    playersName: (string | undefined)[]
+  }
+
+
+  /* Evenement */
+
+  interface RoomStartEvent {
+    code: string
+  }
+
+  interface RoomPlayerListChangeEvent {
+    reason: "kick" | "join" | "leave",
+    playerName: string | undefined,
+    playersName: (string | undefined)[]
+  }
 }
 
 export default Models;

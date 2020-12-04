@@ -12,7 +12,6 @@ const Home = () => {
 
     const history = useHistory();
 
-
     const [ name, setName ] = React.useState("");
     const [ code, setCode ] = React.useState("");
 
@@ -29,7 +28,26 @@ const Home = () => {
     const joinRoomResponse = React.useCallback((res: Models.SocketResponse) => {
         if (res.success) {
             console.log('SUCCESS')
-            history.push('/room')
+            history.push(`/room/${code}`)
+        } else {
+            console.log("ERROR")
+            console.log(res)
+        }
+    }, [code])
+
+    const createRoom = React.useCallback(() => {
+        const createRoomParams: Models.CreateRoomParams = {
+            settings: {
+                name: name
+            }
+        } 
+        socket.emit('CreateRoom', createRoomParams, createRoomResponse)
+    }, [name])
+
+    const createRoomResponse = React.useCallback((res: Models.CreateRoomResponse) => {
+        if(res.success) {
+            console.log(res)
+            history.push(`/room/${res.code}`)
         } else {
             console.log("ERROR")
             console.log(res)
@@ -59,7 +77,7 @@ const Home = () => {
                             placeholderTextColor="#686D7F"
                             disableFullscreenUI
                         />
-                        <Button>Créer une partie</Button>
+                        <Button onPress={createRoom} >Créer une partie</Button>
                     </View>
                 </View>
             </ImageBackground>
