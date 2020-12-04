@@ -15,7 +15,7 @@ class App {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     this.io = require('socket.io')(this.http, {
       cors: {
-        origin: "http://localhost:3000",
+        origin: "http://localhost:19006",
         methods: ["GET", "POST"],
         allowedHeaders: ["*"],
         credentials: true

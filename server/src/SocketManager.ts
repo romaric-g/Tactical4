@@ -13,7 +13,7 @@ class SocketManager {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public onConnection(socket: any) {
-        const player: Player = new Player(socket);
+            const player: Player = new Player(socket);
         playerManager.register(player)
 
         socket.on('disconnect', () => {

@@ -3,12 +3,13 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
-    children: string
+    children: string,
+    onPress?: () => void
 }
 
-const Button = ({children}: Props) => {
+const Button = ({children, onPress}: Props) => {
     return (
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={onPress}>
             <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
                 <Text style={styles.buttonText}>{children}</Text>
             </LinearGradient>

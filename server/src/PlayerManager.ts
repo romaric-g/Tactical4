@@ -13,6 +13,10 @@ class PlayerManager {
     }
 
     disconnect(id: string) {
+        const player = this.players[id];
+        if (player) {
+            player.onLeave()
+        }
         delete this.players[id];
         console.log('Disconnected: ' + id)
     }
