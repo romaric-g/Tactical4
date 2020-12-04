@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, TextInput, ImageBackground, Image, Text } from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, View, TextInput, ImageBackground, Image, Text, TouchableOpacity  } from 'react-native';
 import { withRouter } from 'react-router-native';
 import Button from '../Components/Button';
 
@@ -10,7 +10,14 @@ const logo = require('../assets/logo.png');
 const Room = () => {
 
     const [ GameId, setGameId ] = React.useState("DHJXNJ");
+    const [ Copied, setCopied ] = React.useState(false);
+    const textRef = React.useRef<TextInput>(null);
 
+    
+    const focusTextInput = React.useCallback( () => {
+        console.log(textRef.current.value);
+    },[textRef]
+    );
     return (
         <View style={styles.container}>
             <ImageBackground source={image} style={styles.image}>
@@ -20,13 +27,18 @@ const Room = () => {
                     <Text style={styles.playerName}>Titouan</Text>
                     <View style={styles.footer}>
                         <View style={styles.containerInput}>
-                            <TextInput
-                                style={{...styles.input, ...styles.code}}
-                                placeholder={GameId}
-                                placeholderTextColor="#686D7F"
-                                value = {GameId}
-                            >
-                            </TextInput>
+                            <TouchableOpacity onPress={focusTextInput} style={{...styles.input, ...styles.code}}> 
+                                <TextInput
+                                    style={{...styles.input, ...styles.code}}
+                                    placeholder={GameId}
+                                    placeholderTextColor="#686D7F"
+                                    value = {GameId}
+                                    disableFullscreenUI
+                                    selectTextOnFocus
+                                    ref={textRef}
+                                >
+                                </TextInput>
+                            </TouchableOpacity> 
                             <View style={styles.secondePartieInput}>
                                 <View style={styles.traitSeparationInput}></View>
                                 <Image

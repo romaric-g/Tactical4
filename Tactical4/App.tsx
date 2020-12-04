@@ -19,8 +19,8 @@ const App = () => {
     <NativeRouter>
       <StatusBar hidden />
       <View style={styles.container}>
-        <Route exact path="/" component={Home} />
-        <Route path="/room" component={Room} />
+        <Route exact path="/room" component={Home} />
+        <Route path="/" component={Room} />
       </View>
     </NativeRouter>
   );
