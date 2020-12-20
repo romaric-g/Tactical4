@@ -1,0 +1,2 @@
+web: npm run build
+web: node dist/App.js
