@@ -25,7 +25,15 @@ declare namespace Models {
     player2?: PlayerInfo,
     grid: number[][],
     lastPlacement: { x: number, y: number } | null,
-    score: number[],    
+    score: number[],
+    win?: WinState,
+    leave?: boolean
+  }
+
+  interface WinState {
+    points: { x: number, y: number }[],
+    winnerID: string,
+    scoreAdded: number
   }
 
   /* Params */

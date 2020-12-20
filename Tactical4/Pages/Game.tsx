@@ -23,6 +23,8 @@ const Game = () => {
                 console.log(event)
             }
         })
+
+        //setGameState({"currentPlayer":1,"grid":[[],[],[],[],[],[],[],[],[1,2]],"lastPlacement":{"x":8,"y":2},"player1":{"name":"zeaz","id":"i3BsV3ylNjIaldaRAAAt"},"player2":{"name":"FROFN2","id":"ybYGF8FJSp9G8QACAAAr"},"score":[0,0]})
     }, []);
 
     const currentPlayer = React.useMemo(() => {
@@ -49,12 +51,12 @@ const Game = () => {
                     <PlayerInfo 
                         name={gameState.player1?.name}
                         rank={1}
-                        score={1200}
+                        score={gameState.score[0]}
                     />
                     <PlayerInfo 
                         name={gameState.player2?.name}
                         rank={2}
-                        score={350}
+                        score={gameState.score[1]}
                     />
                 </View>
                 <Image style={styles.image} source={require('./../assets/logo.png')} />

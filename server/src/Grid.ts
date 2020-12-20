@@ -1,3 +1,5 @@
+import { dir } from "console";
+import { cpuUsage } from "process";
 import Player from "./Player";
 import Room from "./Room";
 
@@ -33,11 +35,55 @@ export default class Grid {
 
         this.lastPlacement = {
             x: column,
-            y: this.points[column].length
+            y: this.points[column].length -1
         };
-        this.next()
+
+        const sequances = this.findSequence(this.lastPlacement, playerNumber)
+        const win = Object.values(sequances).some((sq) => sq.length >= 4)
+
+        if (win) {
+            const points: Position[] = Array.prototype.concat.apply(
+                [], 
+                Object.values(sequances).filter((sq) => sq.length >= 4)
+            );    
+            this.room.setWin({
+                winnerID: player.id,
+                points: points,
+                scoreAdded: 100
+            })
+        } else {
+            this.next()
+        }
         this.room.dispatchNewGameState();
+        
         return this.lastPlacement;
+    }
+
+    findSequence(source: Position, playerNumber: number) {
+        const searchDirections = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[-1,1],[1,-1]];
+
+        const checkDirection = (source: Position, direction: number[]) : Position[] => {
+            const sequence: Position[] = [];
+            const current = {
+                x: (source.x + direction[0]),
+                y: (source.y + direction[1])
+            } 
+            if (this.points[current.x][current.y] === playerNumber) {
+                if (current.x > this.width || current.y > this.height) return sequence;
+                sequence.push(current)
+                sequence.push(...checkDirection(current, direction))
+            }
+            return sequence;
+        }
+
+        const sequence: {[key: string]: Position[]} = {}
+
+        for (let index = 0; index < searchDirections.length; index++) {
+            const searchDirection = searchDirections[index];
+            sequence[index] = [source, ...checkDirection(source, searchDirection)]
+        }
+        
+        return sequence;
     }
 
     next() {

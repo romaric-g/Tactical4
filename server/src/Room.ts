@@ -8,6 +8,7 @@ export default class Room {
     public readonly grid: Grid;
     private players: Player[];
     private isStart = false;
+    private win: Models.WinState | undefined = undefined;
 
     constructor(code: string) {
         this.code = code;
@@ -80,7 +81,8 @@ export default class Room {
             lastPlacement: this.grid.lastPlacement,
             player1: this.players[0].toInfo(),
             player2: this.players[1].toInfo(),
-            score: [0,0]
+            score: [0,0],
+            win: this.win
         }
     }
 
@@ -89,5 +91,10 @@ export default class Room {
         if ( this.players[0] === player) return 1;
         if ( this.players[1] === player) return 2;
         return 0;
+    }
+
+    
+    setWin(win: Models.WinState) {
+        this.win = win;
     }
 }
