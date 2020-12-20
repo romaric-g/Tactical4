@@ -10,7 +10,8 @@ const rows = [1,2,3,4,5,6];
 interface Props {
   grid: number[][],
   canPlay: boolean,
-  currentPlayer: number
+  currentPlayer: number,
+  win: Models.WinState
 }
 
 export default function Puissance4(props: Props) {
@@ -18,7 +19,8 @@ export default function Puissance4(props: Props) {
   const {
     grid,
     canPlay,
-    currentPlayer
+    currentPlayer,
+    win
   } = props;
 
   const play = React.useCallback((column: number) => {
@@ -31,13 +33,13 @@ export default function Puissance4(props: Props) {
     columns.map((v, columnIndex) => (
       <View key={columnIndex} style={styles.col}>
         {rows.map((v2, rowIndex) => {
-          const safeGrid = grid[columnIndex]
-          const value = safeGrid.length > rowIndex ? safeGrid[rowIndex] : 0;
+          const safeRow = grid[columnIndex]
+          const value = safeRow.length > rowIndex ? safeRow[rowIndex] : 0;
           if (value === 0) {
             return (
               <TouchableOpacity key={rowIndex} onPress={() => play(columnIndex)}>
-                <View style={styles.circlePlace} >
-                  <View style={styles.circleInnerPlace} />
+                <View style={canPlay ? styles.circlePlace : styles.circleNoPlace} >
+                  <View style={canPlay ? styles.circleInnerPlace : null} />
                 </View>
               </TouchableOpacity>
             )
@@ -70,10 +72,11 @@ const styles = StyleSheet.create({
     position: "relative",
     flexDirection: 'row',
     width: 459,
-    height: 300.7,
-    backgroundColor: '#3B3F4D',
+    height: 300.7
   },
   col: {
+    display: 'flex',
+    flexDirection: 'column-reverse',
     height:'100%',
     marginRight: 12.39,
     justifyContent: 'flex-end'
@@ -128,5 +131,14 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 40,
     backgroundColor: '#DEDEDE',
+  },
+  circleNoPlace: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 40,
+    marginTop: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
