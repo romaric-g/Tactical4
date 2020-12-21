@@ -20,6 +20,7 @@ declare namespace Models {
   }
 
   interface GameState {
+    me: 0 | 1 | 2 ,
     currentPlayer: number,
     player1?: PlayerInfo,
     player2?: PlayerInfo,

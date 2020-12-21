@@ -62,7 +62,7 @@ class PlayerController {
       if (room) {
          callback({
             success: true,
-            state: room.getStateInfo()
+            state: room.getStateInfo(room.getPlayerNumber(this.player))
          })
       }else {
          callback({
