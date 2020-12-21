@@ -25,6 +25,7 @@ export default class Grid {
     play(column: number, player: Player) : Position {
         const playerNumber = this.room.getPlayerNumber(player);
         if (!this.points[column]) this.points[column] = [];
+        if (!this.room.isState()) throw ("La partie n'est pas lancé");
         if (playerNumber === 0) throw ("Aucun joueur n'a été designé pour jouer");
         if (column >= this.width) throw ("La colonne n'existe pas");
         if (this.points[column].length >= this.height) throw ("Il n'y a plus de place sur cette colonne");

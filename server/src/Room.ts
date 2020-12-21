@@ -111,4 +111,9 @@ export default class Room {
     addScore(playerNumber: 1 | 2, scoreAdded: number) {
         this.score[playerNumber] = this.score[playerNumber] + scoreAdded;
     }
+
+
+    isState() {
+        return this.isStart;
+    }
 }
