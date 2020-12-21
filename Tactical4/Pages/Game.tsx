@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 import Button from '../Components/Button';
 import PlayerInfo from '../Components/PlayerInfo';
 import Puissance4 from '../Components/puissance4';
+import PartyEnd from '../Components/PartyEnd';
 import socket from '../connection';
 import Models from '../types/models';
 
@@ -24,6 +25,7 @@ const Game = () => {
             }
         })
 
+
         //setGameState({"currentPlayer":1,"grid":[[],[],[],[],[],[],[],[],[1,2]],"lastPlacement":{"x":8,"y":2},"player1":{"name":"zeaz","id":"i3BsV3ylNjIaldaRAAAt"},"player2":{"name":"FROFN2","id":"ybYGF8FJSp9G8QACAAAr"},"score":[0,0]})
     }, []);
 
@@ -33,6 +35,31 @@ const Game = () => {
 
     const canPlay = React.useMemo(() => {
         return currentPlayer?.id === socket.id;
+    }, [gameState])
+
+    const winner = React.useMemo(() => {
+        return gameState?.win?.winnerID === gameState?.player1?.id ? gameState?.player1?.name : gameState?.player2?.name
+     }, [gameState])
+
+    const loser = React.useMemo(() => {
+        return gameState?.win?.winnerID === gameState?.player1?.id ? gameState?.player2?.name : gameState?.player1?.name
+    }, [gameState])
+
+    const winnerScore = React.useMemo(() => {
+        return gameState?.win?.winnerID === gameState?.player1?.id ? gameState?.score[0] : gameState?.score[1]
+    }, [gameState])
+
+    const loserScore = React.useMemo(() => {
+        return gameState?.win?.winnerID === gameState?.player1?.id ? gameState?.score[1] : gameState?.score[0]
+    }, [gameState])
+
+    const win = React.useMemo(() => {
+        if(gameState?.me === 1){
+            return gameState?.win?.winnerID === gameState?.player1?.id
+        }else{
+            return gameState?.win?.winnerID === gameState?.player2?.id
+        }
+        
     }, [gameState])
 
     if (!gameState) return (
@@ -62,6 +89,17 @@ const Game = () => {
                 <Image style={styles.image} source={require('./../assets/logo.png')} />
                 <Button>Emote</Button>
             </View>
+            {gameState.win &&
+                <View style={styles.partend}>
+                    <PartyEnd
+                    Winner={winner}
+                    Loser={loser}
+                    WinnerScore= {winnerScore}
+                    LoserScore= {loserScore}
+                    Win ={win}
+                    />
+                </View>
+            }
         </View>
     )
 }
@@ -92,6 +130,13 @@ const styles = StyleSheet.create({
     emote: {
         width: 100,
         height: 40
+    },
+    partend: {
+        position: 'absolute',
+        top: 0,
+        left:0,
+        width: '100%',
+        height: '100%',
     }
 });
 

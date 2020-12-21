@@ -11,7 +11,7 @@ interface Props {
   grid: number[][],
   canPlay: boolean,
   currentPlayer: number,
-  win: Models.WinState
+  // win: Models.WinState
 }
 
 export default function Puissance4(props: Props) {
@@ -20,7 +20,7 @@ export default function Puissance4(props: Props) {
     grid,
     canPlay,
     currentPlayer,
-    win
+    // win
   } = props;
 
   const play = React.useCallback((column: number) => {

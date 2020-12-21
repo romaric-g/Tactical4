@@ -3,16 +3,23 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
-    children: string,
-    onPress?: () => void
+    children?: string,
+    onPress?: () => void,
+    color?: string,
 }
 
-const Button = ({children, onPress}: Props) => {
+const Button = ({children, onPress, color}: Props) => {
     return (
         <TouchableOpacity onPress={onPress}>
-            <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
-                <Text style={styles.buttonText}>{children}</Text>
-            </LinearGradient>
+            {color == 'noir'?
+                <LinearGradient style={styles.linearGradient} colors={['#171F3B', '#171F3B']} >
+                    <Text style={styles.buttonText}>{children}</Text>
+                </LinearGradient>
+                :
+                <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
+                    <Text style={styles.buttonText}>{children}</Text>
+                </LinearGradient>
+            }
         </TouchableOpacity>
     )
 }
@@ -23,7 +30,9 @@ var styles = StyleSheet.create({
       paddingRight: 15,
       borderRadius: 12,
       width: "100%",
-      height: 50
+      height: 50,
+      justifyContent:'center',
+      alignItems:'center',
     },
     buttonText: {
       fontSize: 18,
