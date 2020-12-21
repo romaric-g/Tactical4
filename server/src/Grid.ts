@@ -1,5 +1,3 @@
-import { dir } from "console";
-import { cpuUsage } from "process";
 import Player from "./Player";
 import Room from "./Room";
 
@@ -27,6 +25,7 @@ export default class Grid {
     play(column: number, player: Player) : Position {
         const playerNumber = this.room.getPlayerNumber(player);
         if (!this.points[column]) this.points[column] = [];
+        if (!this.room.isState()) throw ("La partie n'est pas lancé");
         if (playerNumber === 0) throw ("Aucun joueur n'a été designé pour jouer");
         if (column >= this.width) throw ("La colonne n'existe pas");
         if (this.points[column].length >= this.height) throw ("Il n'y a plus de place sur cette colonne");
@@ -45,12 +44,14 @@ export default class Grid {
             const points: Position[] = Array.prototype.concat.apply(
                 [], 
                 Object.values(sequances).filter((sq) => sq.length >= 4)
-            );    
+            );
+            const scoreAdded = 100;
             this.room.setWin({
                 winnerID: player.id,
                 points: points,
-                scoreAdded: 100
+                scoreAdded: scoreAdded
             })
+            this.room.addScore(playerNumber, scoreAdded);
         } else {
             this.next()
         }
@@ -68,8 +69,8 @@ export default class Grid {
                 x: (source.x + direction[0]),
                 y: (source.y + direction[1])
             } 
+            if (current.x >= this.width || current.y >= this.height || current.x < 0 || current.y < 0) return sequence;
             if (this.points[current.x][current.y] === playerNumber) {
-                if (current.x >= this.width || current.y >= this.height) return sequence;
                 sequence.push(current)
                 sequence.push(...checkDirection(current, direction))
             }

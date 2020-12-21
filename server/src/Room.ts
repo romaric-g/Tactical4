@@ -5,9 +5,10 @@ import Grid from "./Grid";
 
 export default class Room {
     public readonly code: string;
-    public readonly grid: Grid;
+    public grid: Grid;
     private players: Player[];
     private isStart = false;
+    private score = [0,0];
     private win: Models.WinState | undefined = undefined;
 
     constructor(code: string) {
@@ -20,11 +21,11 @@ export default class Room {
         this.players.push(player);
         player.setRoom(this);
 
-        this.dispatchEvent<Models.RoomPlayerListChangeEvent>("RoomPlayerListChange", {
+        this.dispatchEvent<Models.RoomPlayerListChangeEvent>("RoomPlayerListChange", () => ({
             reason: "join",
             playerName: player.name,
             playersName: this.getPlayersName()
-        })
+        }))
     }
 
     leave(player: Player) : void {
@@ -34,11 +35,11 @@ export default class Room {
             RoomManager.deleteRoom(this)
         }
 
-        this.dispatchEvent<Models.RoomPlayerListChangeEvent>("RoomPlayerListChange", {
+        this.dispatchEvent<Models.RoomPlayerListChangeEvent>("RoomPlayerListChange", () => ({
             reason: "leave",
             playerName: player.name,
             playersName: this.getPlayersName()
-        })
+        }))
         
     }
 
@@ -52,36 +53,44 @@ export default class Room {
 
     start() {
         if (!this.isStart) {
+            this.grid = new Grid(this);
             this.isStart = true;
-            this.dispatchEvent<Models.RoomStartEvent>("RoomStart", {
+            this.dispatchEvent<Models.RoomStartEvent>("RoomStart", () => ({
                 code: this.code
-            })
+            }))
             return true;
         } else {
             return false;
         }
     }
 
-    dispatchEvent<T>(name: string, event: T) {
+    dispatchEvent<T>(name: string, event: (params: { playerID: string }) => T) {
         this.players.forEach((player) =>
-            player.sendEvent<T>(name, event)
+            player.sendEvent<T>(name, event({ 
+                playerID: player.id
+            }))
         )
     }
 
     dispatchNewGameState() {
-        this.dispatchEvent<Models.GameStateChangeEvent>("GameStateChange", {
-            state: this.getStateInfo()
-        })
+        this.dispatchEvent<Models.GameStateChangeEvent>("GameStateChange", ({ playerID }) => (
+            {
+                state: this.getStateInfo(
+                    playerID === this.players[0].id ? 1 : 2
+                )
+            }
+        ))
     }
 
-    getStateInfo () : Models.GameState {
+    getStateInfo (me: 0 | 1 | 2) : Models.GameState {
         return {
+            me: me,
             currentPlayer: this.grid.currentPlayerNumber,
             grid: this.grid.points,
             lastPlacement: this.grid.lastPlacement,
             player1: this.players[0].toInfo(),
             player2: this.players[1].toInfo(),
-            score: [0,0],
+            score: this.score,
             win: this.win
         }
     }
@@ -96,5 +105,15 @@ export default class Room {
     
     setWin(win: Models.WinState) {
         this.win = win;
+        this.isStart = false;
+    }
+
+    addScore(playerNumber: 1 | 2, scoreAdded: number) {
+        this.score[playerNumber-1] = this.score[playerNumber-1] + scoreAdded;
+    }
+
+
+    isState() {
+        return this.isStart;
     }
 }
