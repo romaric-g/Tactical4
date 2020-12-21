@@ -1,5 +1,3 @@
-import { dir } from "console";
-import { cpuUsage } from "process";
 import Player from "./Player";
 import Room from "./Room";
 
@@ -45,12 +43,14 @@ export default class Grid {
             const points: Position[] = Array.prototype.concat.apply(
                 [], 
                 Object.values(sequances).filter((sq) => sq.length >= 4)
-            );    
+            );
+            const scoreAdded = 100;
             this.room.setWin({
                 winnerID: player.id,
                 points: points,
-                scoreAdded: 100
+                scoreAdded: scoreAdded
             })
+            this.room.addScore(playerNumber, scoreAdded);
         } else {
             this.next()
         }
