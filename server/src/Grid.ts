@@ -68,8 +68,8 @@ export default class Grid {
                 x: (source.x + direction[0]),
                 y: (source.y + direction[1])
             } 
+            if (current.x >= this.width || current.y >= this.height) return sequence;
             if (this.points[current.x][current.y] === playerNumber) {
-                if (current.x >= this.width || current.y >= this.height) return sequence;
                 sequence.push(current)
                 sequence.push(...checkDirection(current, direction))
             }

@@ -92,7 +92,7 @@ class PlayerController {
       const room = this.player.getRoom()
       if (room) {
          try {
-            const hasPlay = room.grid.play(params.column, this.player);
+            room.grid.play(params.column, this.player);
             callback({ success: true})
          } catch (error) {
             callback({ success: false, message: error })

@@ -5,7 +5,7 @@ import Grid from "./Grid";
 
 export default class Room {
     public readonly code: string;
-    public readonly grid: Grid;
+    public grid: Grid;
     private players: Player[];
     private isStart = false;
     private win: Models.WinState | undefined = undefined;
@@ -52,6 +52,7 @@ export default class Room {
 
     start() {
         if (!this.isStart) {
+            this.grid = new Grid(this);
             this.isStart = true;
             this.dispatchEvent<Models.RoomStartEvent>("RoomStart", {
                 code: this.code
@@ -96,5 +97,6 @@ export default class Room {
     
     setWin(win: Models.WinState) {
         this.win = win;
+        this.isStart = false;
     }
 }
