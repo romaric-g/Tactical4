@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
     name: {
         color: "white",
         fontSize: 24,
-        fontWeight: "800"
+        fontFamily: 'Montserrat_700Bold',
     },
     score: {
         color: "white",
         fontSize: 14,
-        fontWeight: "200"
+        fontFamily: 'Montserrat_300Light',
     }
 });
 

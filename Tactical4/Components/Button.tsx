@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
-    children?: string,
+    children?: string | undefined,
     onPress?: () => void,
     color?: string,
 }

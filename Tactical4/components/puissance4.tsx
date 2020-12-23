@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Modal  } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import {bounceInDown, bounceInDownJeton, bounceInUp, bounceInRight, bounceInLeft, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn, minify} from '../Animations/Animation';
 import socket from '../connection';
-import Models from '../types/models';
+import Models from '../types/Models';
 
 const columns = [0,1,2,3,4,5,6,7,8];
 const rows = [1,2,3,4,5,6];
@@ -31,7 +33,7 @@ export default function Puissance4(props: Props) {
 
   const createCircle = React.useCallback(() => (
     columns.map((v, columnIndex) => (
-      <View key={columnIndex} style={styles.col}>
+      <View key={columnIndex} style={[styles.col,{transform: [{ translateY: -12 }]}]}>
         {rows.map((v2, rowIndex) => {
           const safeRow = grid[columnIndex]
           const value = safeRow.length > rowIndex ? safeRow[rowIndex] : 0;
@@ -45,8 +47,10 @@ export default function Puissance4(props: Props) {
             )
           } else {
             return (
-              <View style={value === 1 ? styles.circle1 : styles.circle2}>
-                <View style={value === 1 ? styles.circleInner1 : styles.circleInner2} />
+              <View key={"1"+ columnIndex + rowIndex} style={canPlay ? styles.circlePlace : styles.circleNoPlace} >
+                <Animatable.View animation={bounceInDownJeton} style={value === 1 ? styles.circle1 : styles.circle2} key={rowIndex}>
+                  <View style={value === 1 ? styles.circleInner1 : styles.circleInner2} key={rowIndex}/>
+                </Animatable.View>
               </View>
             )
           }
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#FFCF54',
     borderRadius: 40,
-    marginTop: 12,
+    marginTop: 10.2,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#3FCA87',
     borderRadius: 40,
-    marginTop: 12,
+    marginTop: 10.2,
     alignItems: 'center',
     justifyContent: 'center',
   },

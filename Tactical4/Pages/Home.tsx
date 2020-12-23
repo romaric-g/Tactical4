@@ -1,16 +1,20 @@
-import React from 'react';
-import { StyleSheet, View, TextInput, ImageBackground, Image, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions  } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import {bounceInDown, bounceInLeft, bounceInUp} from '../Animations/Animation';
 import { useHistory } from 'react-router';
 import Button from '../Components/Button';
-import Models from '../types/models';
-import socket from './../connection';
+import DispAlert from '../Components/DispAlert';
+import Credits from '../Components/Credits'
+import Models from '../types/Models';
+import socket from './../connection'
 
-const image = require('../assets/tactical4background.png');
 const logo = require('../assets/logo.png');
 
 const Home = () => {
 
     const history = useHistory();
+    const [Credit, setCredit] = useState(false)
 
     const [ name, setName ] = React.useState("");
     const [ code, setCode ] = React.useState("");
@@ -53,60 +57,97 @@ const Home = () => {
             console.log(res)
         }
     }, [])
-
+    const dispCredit= () => {
+        setCredit(!Credit)
+    };
     return (
         <View style={styles.container}>
-            <ImageBackground source={image} style={styles.image}>
-                <Image source={logo} style={styles.logo} />
+            <Animatable.View animation={bounceInLeft} style={styles.creditContainer}>
+                <TouchableOpacity onPress={dispCredit}>
+                    <Text style={styles.credit}>Crédits</Text>
+                </TouchableOpacity>
+            </Animatable.View>
+            <View style={styles.addpadding}>
+                <Animatable.View animation={bounceInDown}>
+                    <Image source={logo} style={styles.logo} />
+                </Animatable.View>
                 <View style={styles.pageContent}>
-                    <TextInput
-                        style={styles.name}
-                        onChangeText={setName}
-                        value={name}
-                        placeholder="Nom"
-                        placeholderTextColor="#686D7F"
-                        disableFullscreenUI
-                        maxLength={10}
-                    />
-                    <View style={styles.footer}>
-                        <TouchableOpacity onPress={joinRoom}>
-                            <View style={[styles.submitArrow, {
-                                transform: [{ translateY: 35 }]
-                            }]}>
-                                <svg width="26" height="21" viewBox="0 0 26 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M23.2116 9.70815L4.7949 2.70815C4.60945 2.63767 4.40305 2.61112 4.19967 2.6316C3.99629 2.65207 3.80428 2.71872 3.64592 2.82381C3.48756 2.9289 3.36936 3.06812 3.30505 3.2253C3.24073 3.38247 3.23294 3.55116 3.28257 3.71177L4.59557 7.95465L13.0001 10.5L4.59557 13.0454L3.28257 17.2883C3.232 17.449 3.23915 17.618 3.30316 17.7756C3.36718 17.9332 3.48543 18.0728 3.64407 18.1781C3.80272 18.2833 3.9952 18.3499 4.199 18.3701C4.4028 18.3903 4.60949 18.3631 4.7949 18.2919L23.2116 11.2919C23.3977 11.2212 23.555 11.1092 23.6653 10.969C23.7755 10.8288 23.834 10.6661 23.834 10.5C23.834 10.3339 23.7755 10.1713 23.6653 10.031C23.555 9.8908 23.3977 9.77881 23.2116 9.70815Z" fill="white"/>
-                                </svg>
-                            </View>
-                        </TouchableOpacity>
+                    <Animatable.View animation={bounceInDown}>
                         <TextInput
-                            style={styles.code}
-                            onChangeText={setCode}
-                            onSubmitEditing={joinRoom}
-                            value={code}
-                            maxLength={6}
-                            placeholder="Rejoindre une partie"
+                            style={styles.name}
+                            onChangeText={setName}
+                            value={name}
+                            placeholder="Nom"
                             placeholderTextColor="#686D7F"
                             disableFullscreenUI
+                            maxLength={10}
                         />
-                        <Button onPress={createRoom} >Créer une partie</Button>
-                    </View>
+                    </Animatable.View>
+                    <Animatable.View animation={bounceInUp}>
+                        <View style={styles.footer}>
+                            <TextInput
+                                style={styles.code}
+                                onChangeText={(text) => setCode(text.toUpperCase())}
+                                autoCapitalize="characters"
+                                onSubmitEditing={joinRoom}
+                                value={code}
+                                maxLength={6}
+                                placeholder="Rejoindre une partie"
+                                placeholderTextColor="#686D7F"
+                                disableFullscreenUI
+                            />
+                            <TouchableOpacity onPress={joinRoom}>
+                                <View style={styles.submitArrow}>
+                                    <Image style={styles.arrow} source={require('./../assets/arrowsend.png')} />
+                                </View>
+                            </TouchableOpacity>
+                            <Button onPress={createRoom} >Créer une partie</Button>
+                        </View>
+                    </Animatable.View>
                 </View>
-            </ImageBackground>
-            
+            </View>
+            {/* <View style={styles.partend}>
+                <DispAlert
+                Message={"Ton adversaire a quitté la partie."}
+                GoHome={true}
+                />
+            </View> */}
+
+            {Credit &&
+                <View style={styles.partend}>
+                    <Credits
+                    Close={dispCredit}
+                    />
+                </View>
+            }
         </View>
+        // "MjczOTE0NzM2ODA1MTUwNzMx.XzBbuQ.5qp_vG4HsWgviy25Opt9MlVTQX0"
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-      height: "100%",
-      color: "white"
+        height: "100%",
+        color: "white",
+        // padding: 30,
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
+        // backgroundColor:'green'
+    },
+    addpadding:{
+        padding: 30,
+        height:'100%',
+        alignItems: "center"
+    },
+    arrow:{
+        width:26,
+        height:21,
     },
     image: {
-      flex: 1,
-      resizeMode: "cover",
-      alignItems: "center",
-      padding: 30
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
     },
     pageContent: {
       paddingTop: 20,
@@ -118,6 +159,24 @@ const styles = StyleSheet.create({
     logo: {
       width: 142,
       height: 54.77
+    },
+    creditContainer: {
+        position: 'absolute',
+        flex:1,
+        left:0,
+        width: '100%',
+        height: '100%',
+        // backgroundColor:'red',
+        justifyContent:'flex-end',
+        alignItems:'flex-end',
+        alignSelf:'center',
+    },
+    credit:{
+        fontSize: 24,
+        fontFamily: 'SuezOne_400Regular',
+        color: "#FFFFFF",
+        marginBottom:15,
+        marginRight:15,
     },
     name: {
         height: 50,
@@ -133,6 +192,8 @@ const styles = StyleSheet.create({
     },
     submitArrow: {
         marginLeft: '80%',
+        position:'absolute',
+        transform: [{ translateY: -45 }],
     },
     code: {
         height: 50,
@@ -141,11 +202,20 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         paddingHorizontal: 20,
         marginBottom: 10,
-        fontSize: 18,
-        width: "100%"
+        fontSize: 17,
+        width: "100%",
+        fontFamily: 'Montserrat_400Regular',
     },
     footer: {
         width: 270
+    },
+    partend: {
+        // display:'none',
+        position: 'absolute',
+        top: 0,
+        left:0,
+        width: '100%',
+        height: '100%',
     }
 });
 

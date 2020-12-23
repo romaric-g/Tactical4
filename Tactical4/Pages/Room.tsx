@@ -1,15 +1,20 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, View, TextInput, ImageBackground, Image, Text, TouchableOpacity  } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, BackHandler, Platform, Alert} from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 import { useHistory, useParams, withRouter } from 'react-router-native';
+import * as Animatable from 'react-native-animatable';
+import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft} from '../Animations/Animation';
 import Button from '../Components/Button';
+import DispAlert from '../Components/DispAlert'
 import socket from '../connection';
-import Models from '../types/models';
+import Models from '../types/Models';
 
-const image = require('../assets/tactical4background.png');
 const logo = require('../assets/logo.png');
 
 const Room = () => {
     const history = useHistory();
+    const [Back, setBack] = useState(false)
+    const [copyarlert, setcopyarlert] = useState(false)
 
     const textRef = React.useRef<TextInput>(null)
 
@@ -17,6 +22,14 @@ const Room = () => {
     const [ playersName, setPlayersName ] = React.useState<(string | undefined)[]>([]);
 
     React.useEffect(() => {
+        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+            window.history.pushState(null, document.title, window.location.href);
+            window.addEventListener('popstate', function (event){
+                window.history.pushState(null, document.title,  window.location.href);
+                setBack(true)
+            });
+        }
+        
         
         socket.emit("GetRoomInfo", null, (res: Models.GetRoomInfoResponse) => {
             console.log(res)
@@ -49,18 +62,53 @@ const Room = () => {
         //console.log(textRef.current.value);
     },[textRef]
     );
+    const dispBack = () => {
+        setBack(!Back)
+    };
+    const dispalert = () => {
+        setBack(!copyarlert)
+    };
+    useEffect(() => {
+        const backAction = () => {
+          console.log('back');
+          return false;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+    }, []);
+
+    const copyCodeToCB = async () => {
+        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+            await navigator.clipboard.writeText(`Viens jouer avec moi sur Tactical4 ! Voici le code de partie : ${params.code}`)
+        }else{
+            await Clipboard.setString(`Viens jouer avec moi sur Tactical4 ! Voici le code de partie : ${params.code}`);
+        }
+        setcopyarlert(!copyarlert)
+    };
+
     return (
         <View style={styles.container}>
-            <ImageBackground source={image} style={styles.image}>
+            <Animatable.View animation={bounceInDown}>
                 <Image source={logo} style={styles.logo} />
-                <View style={styles.pageContent}>
-                    <View>
+            </Animatable.View>
+            <View style={styles.pageContent}>
+                <View>
+                    <Animatable.View animation={bounceInRight}>
                         <Text style={styles.counterPlayer}>Joueurs [{playersName.length}/2]</Text>
-                        {playersName.map((playerName, index) => 
+                    </Animatable.View>
+                    {playersName.map((playerName, index) => 
+                        <Animatable.View key={index} animation={bounceInRight}>
                             <Text key={index} style={styles.playerName}>{(playerName || "?")}</Text>
-                        )}
-                    </View>
-                    <View style={styles.footer}>
+                        </Animatable.View>
+                    )}
+                </View>
+                <View style={styles.footer}>
+                    <Animatable.View animation={bounceInUp}>
                         <View style={styles.containerInput}>
                             <TouchableOpacity onPress={focusTextInput} style={styles.input}> 
                                 <TextInput
@@ -76,26 +124,44 @@ const Room = () => {
                             </TouchableOpacity> 
                             <View style={styles.secondePartieInput}>
                                 <View style={styles.traitSeparationInput}></View>
-                                <Image
-                                    resizeMode="contain"
-                                    style={styles.shareIcon} 
-                                    source={require('../assets/share.png')}
-                                />
+                                <TouchableOpacity onPress={copyCodeToCB}> 
+                                    <Image
+                                        resizeMode="contain"
+                                        style={styles.shareIcon} 
+                                        source={require('../assets/share.png')}
+                                    />
+                                </TouchableOpacity> 
                             </View>
                         </View>
                         <Button onPress={startRoom}>{ !canStart ? "Joueur en attente..." : "Lancer la partie"}</Button>
-                    </View>
+                    </Animatable.View>
                 </View>
-            </ImageBackground>
+            </View>
+            {Back &&
+                <View style={styles.partend}>
+                    <DispAlert
+                    Message={"Quitter la salle d'attente?"}
+                    GoHome={false}
+                    Close={dispBack}
+                    />
+                </View>
+            }
+            {copyarlert &&
+                <View style={styles.partend}>
+                    <DispAlert
+                    Message={"Quitter la salle d'attente?"}
+                    GoHome={false}
+                    Close={dispalert}
+                    />
+                </View>
+            }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-      height: "100%"
-    },
-    image: {
+      height: "100%",
       flex: 1,
       resizeMode: "cover",
       alignItems: "center",
@@ -109,6 +175,14 @@ const styles = StyleSheet.create({
     playerName: {
         fontSize: 24,
         color: "white",
+        fontFamily: 'Montserrat_400Regular',
+    },
+    partend: {
+        position: 'absolute',
+        top: 0,
+        left:0,
+        width: '100%',
+        height: '100%',
     },
     pageContent: {
       paddingTop: 20,
