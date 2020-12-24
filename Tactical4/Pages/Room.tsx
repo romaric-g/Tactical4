@@ -156,7 +156,7 @@ const Room = () => {
                     <DispAlert
                         quitRoom={quitRoom}
                         message={"Quitter la salle d'attente?"}
-                        GoHome={false}
+                        type='requestHome'
                         dispBack={dispBack}
                     />
                 </View>
@@ -166,7 +166,7 @@ const Room = () => {
                     <DispAlert
                         quitRoom={quitRoom}
                         message={"Quitter la salle d'attente?"}
-                        GoHome={false}
+                        type='requestHome'
                         dispBack={dispalert}
                     />
                 </View>
