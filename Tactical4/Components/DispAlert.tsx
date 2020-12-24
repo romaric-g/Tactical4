@@ -7,33 +7,40 @@ import socket from '../connection';
 import Models from '../types/Models';
 
 interface Props {
-    Message?: string | undefined,
-    GoHome?: boolean | undefined,
-    Close?: any,
+    message?: string | undefined,
+    type?: 'requestHome' | 'forceHome',
+    dispBack?: () => void,
+    quitRoom: () => void
 }
 
-const DispAlert = ({Message, GoHome, Close}: Props) => {
-
+const DispAlert = ({message, type, dispBack, quitRoom}: Props) => {
 
     return (
         <View style={styles.Container}>
             <Animatable.View animation={fadeIn400} style={styles.Bg}></Animatable.View>
             <Animatable.View animation={bounceInUp} style={styles.Box}>
                 <Image style={styles.Logo} source={require('./../assets/logo.png')} />
-                <Text style={styles.Message}>{Message}</Text>
-                {GoHome ?
-                    <Button>Retour à l'accueil</Button>
+                <Text style={styles.Message}>{message}</Text>
+                {type === 'forceHome' ?
+                    <View style={styles.Button2}>
+                        <Button
+                            onPress={quitRoom}
+                        >
+                            Retour à l'accueil
+                        </Button>
+                    </View>
                     :
                     <View style={styles.Buttons}>
                         <View style={styles.Button1}>
                             <Button
-                            color="noir"
+                                color="noir"
+                                onPress={quitRoom}
                             >
                                 Quitter
                             </Button> 
                         </View>
                         <View style={styles.Button2}>
-                            <Button onPress={Close}>Annuler</Button>
+                            <Button onPress={dispBack}>Annuler</Button>
                         </View>
                     </View>
                 }

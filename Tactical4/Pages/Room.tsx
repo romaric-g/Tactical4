@@ -38,13 +38,21 @@ const Room = () => {
             }
         })
         
-        socket.on("RoomPlayerListChange", (event: Models.RoomPlayerListChangeEvent) => {
+        const roomPlayerListChange = (event: Models.RoomPlayerListChangeEvent) => {
             setPlayersName(event.playersName);
-        })
+        }
 
-        socket.on("RoomStart", (event: Models.RoomStartEvent) => {
+        const roomStart = (event: Models.RoomStartEvent) => {
             history.push("/game")
-        })
+        }
+        
+        socket.on("RoomStart", roomStart);
+        socket.on("RoomPlayerListChange", roomPlayerListChange);
+
+        return () => {
+            socket.off('RoomPlayerListChange', roomPlayerListChange);
+            socket.off('RoomStart', roomStart);
+        }
     }, []);
 
     
@@ -57,6 +65,12 @@ const Room = () => {
             })
         }
     }, [canStart,])
+
+    const quitRoom = React.useCallback(() => {
+        socket.emit("QuitRoom", null, (e: Models.SocketResponse) => { console.log(e) })
+        history.push("/")
+    }, []);
+
     
     const focusTextInput = React.useCallback( () => {
         //console.log(textRef.current.value);
@@ -140,18 +154,20 @@ const Room = () => {
             {Back &&
                 <View style={styles.partend}>
                     <DispAlert
-                    Message={"Quitter la salle d'attente?"}
-                    GoHome={false}
-                    Close={dispBack}
+                        quitRoom={quitRoom}
+                        message={"Quitter la salle d'attente?"}
+                        GoHome={false}
+                        dispBack={dispBack}
                     />
                 </View>
             }
             {copyarlert &&
                 <View style={styles.partend}>
                     <DispAlert
-                    Message={"Quitter la salle d'attente?"}
-                    GoHome={false}
-                    Close={dispalert}
+                        quitRoom={quitRoom}
+                        message={"Quitter la salle d'attente?"}
+                        GoHome={false}
+                        dispBack={dispalert}
                     />
                 </View>
             }

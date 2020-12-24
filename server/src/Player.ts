@@ -1,5 +1,4 @@
 import PlayerController from "./controllers/PlayerController";
-import Grid from "./Grid";
 import Room from "./Room";
 import Models from "./types/models";
 
@@ -22,7 +21,9 @@ export default class Player {
         this.socket.on('CreateRoom', pc.createRoom.bind(pc));
         this.socket.on('GetRoomInfo', pc.getRoomInfo.bind(pc));
         this.socket.on('StartRoom', pc.startRoom.bind(pc));
+        this.socket.on('QuitRoom', pc.quitRoom.bind(pc))
         this.socket.on('GetGameState', pc.getGameState.bind(pc))
+        this.socket.on('SendEmote', pc.sendEmote.bind(pc))
         this.socket.on('Play', pc.play.bind(pc))
     }
 

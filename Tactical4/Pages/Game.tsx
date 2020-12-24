@@ -11,8 +11,11 @@ import MenuInGame from '../Components/MenuInGame'
 import socket from '../connection';
 import Models from '../types/Models';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useHistory } from 'react-router';
 
 const Game = () => {
+
+    const history = useHistory();
 
     const [ gameState, setGameState ] = React.useState<Models.GameState | null>(null)
     const [Menu, setMenu] = useState(false)
@@ -36,15 +39,38 @@ const Game = () => {
             }
         })
 
-        socket.on("GameStateChange", (event: Models.GameStateChangeEvent) => {
+        const gameStateChange = (event: Models.GameStateChangeEvent) => {
             if (event.state) {
                 setGameState(event.state)
                 console.log(event)
             }
-        })
+        }
 
+        const newEmoteSended = (event: Models.NewEmoteSendedEvent) => {
+            console.log(event)
+            // TODO: afficher l'emote
+        }
+
+        socket.on("GameStateChange", gameStateChange);
+        socket.on("NewEmoteSended", newEmoteSended);
+
+        return () => {
+            socket.off("GameStateChange", gameStateChange);
+            socket.off("NewEmoteSended", newEmoteSended);
+        }
 
         //setGameState({"currentPlayer":1,"grid":[[],[],[],[],[],[],[],[],[1,2]],"lastPlacement":{"x":8,"y":2},"player1":{"name":"zeaz","id":"i3BsV3ylNjIaldaRAAAt"},"player2":{"name":"FROFN2","id":"ybYGF8FJSp9G8QACAAAr"},"score":[0,0]})
+    }, []);
+
+    const sendEmote = React.useCallback((emoteID: number) => {
+        const SendEmoteParams : Models.SendEmoteParams = { emoteID };
+        socket.emit("SendEmote", SendEmoteParams, (e: Models.SocketResponse) => { console.log(e) })
+    }, [])
+
+    const quitRoom = React.useCallback(() => {
+        console.log("QuitRoom")
+        socket.emit("QuitRoom", null, (e: Models.SocketResponse) => { console.log(e) })
+        history.push("/")
     }, []);
 
     const currentPlayer = React.useMemo(() => {
@@ -187,17 +213,29 @@ const Game = () => {
             {Menu &&
                 <View style={styles.partend}>
                     <MenuInGame
-                    menuProp={Menu}
-                    Close={dispMenu}
+                        menuProp={Menu}
+                        quitRoom={quitRoom}
+                        dispMenu={dispMenu}
                     />
                 </View>
             }
             {!gameState.win && !Menu && Back &&
                 <View style={styles.partend}>
                     <DispAlert
-                    Message={"Quitter la partie en cours?"}
-                    GoHome={false}
-                    Close={dispBack}
+                        message={"Quitter la partie en cours?"}
+                        type="requestHome"
+                        quitRoom={quitRoom}
+                        dispBack={dispBack}
+                    />
+                </View>
+            }
+            {gameState.leave &&
+                <View style={styles.partend}>
+                    <DispAlert
+                        message={"Votre adversaire a quitter la partie"}
+                        type="forceHome"
+                        quitRoom={quitRoom}
+                        dispBack={dispBack}
                     />
                 </View>
             }

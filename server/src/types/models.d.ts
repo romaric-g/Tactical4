@@ -56,6 +56,10 @@ declare namespace Models {
     column: number
   }
 
+  interface SendEmoteParams {
+    emoteID: number
+  }
+
   /* Response */
   interface CreateRoomResponse extends SocketResponse {
     code?: string
@@ -87,6 +91,11 @@ declare namespace Models {
 
   interface GameStateChangeEvent {
     state: GameState
+  }
+
+  interface NewEmoteSendedEvent {
+    senderID: string,
+    emoteID: number
   }
 }
 

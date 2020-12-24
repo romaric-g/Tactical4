@@ -8,10 +8,11 @@ import Models from '../types/Models';
 
 interface Props {
     menuProp?: boolean,
-    Close?: any,
+    dispMenu?: () => void,
+    quitRoom?: () => void
 }
 
-const MenuInGame = ({Close}: Props) => {
+const MenuInGame = ({dispMenu, quitRoom}: Props) => {
     return (
         <View style={styles.Container}>
             <Animatable.View animation={fadeIn400} style={styles.Bg}></Animatable.View>
@@ -21,14 +22,15 @@ const MenuInGame = ({Close}: Props) => {
                 <View style={styles.Buttons}>
                     <View style={styles.Button1}>
                         <Button
-                        color="noir"
+                            color="noir"
+                            onPress={quitRoom}
                         >
                             Quitter
                         </Button>
                     </View>
                     <TouchableOpacity>
                         <View style={styles.Button2}>
-                            <Button onPress={Close}>Annuler</Button>
+                            <Button onPress={dispMenu}>Annuler</Button>
                         </View>
                     </TouchableOpacity>
                 </View>

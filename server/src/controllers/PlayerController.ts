@@ -88,21 +88,49 @@ class PlayerController {
       }
    }
 
+   quitRoom (params: null, callback: (res: Models.SocketResponse) => void) {
+      const room = this.hasRoomAndGet(callback);
+      if (room) {
+         room.leave(this.player);
+         callback({ success: true});
+      }
+   }
+
    play (params: Models.PlayParams, callback: (res: Models.SocketResponse) => void) {
-      const room = this.player.getRoom()
+      const room = this.player.getRoom();
       if (room) {
          try {
             room.grid.play(params.column, this.player);
             callback({ success: true})
          } catch (error) {
-            callback({ success: false, message: error })
+            callback({ success: false, message: error });
          }
       } else {
          callback({
             success: false,
             message: "Vous n'avez pas rejoint de partie"
-         })
+         });
       }
+   }
+
+   sendEmote (params: Models.SendEmoteParams, callback: (res: Models.SocketResponse) => void) {
+      const room = this.hasRoomAndGet(callback);
+      if (room) {
+         room.sendEmote(params.emoteID, this.player);
+         callback({ success: true})
+      }
+   }
+
+   hasRoomAndGet (callback: (res: Models.SocketResponse) => void) {
+      const room = this.player.getRoom();
+      if (room) {
+         return room;
+      }
+      callback({
+         success: false,
+         message: "Vous n'avez pas rejoint de partie"
+      });
+      return null;
    }
 }
 

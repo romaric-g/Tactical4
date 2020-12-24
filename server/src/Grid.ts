@@ -11,7 +11,7 @@ export default class Grid {
     public readonly height = 6;
     public readonly width = 9;
     public points: number[][];
-    public currentPlayerNumber = 1; 
+    public currentPlayerNumber = Math.floor(Math.random() * 2) + 1;
     public lastPlacement: Position | null = null; 
 
     constructor(room: Room) {
