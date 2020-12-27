@@ -175,8 +175,8 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontFamily: 'SuezOne_400Regular',
         color: "#FFFFFF",
-        marginBottom:15,
-        marginRight:15,
+        marginBottom:20,
+        marginRight:30,
     },
     name: {
         height: 50,

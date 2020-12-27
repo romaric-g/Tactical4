@@ -107,6 +107,15 @@ const Room = () => {
 
     return (
         <View style={styles.container}>
+            <Animatable.View animation={bounceInRight} style={styles.backContainer}>
+                <TouchableOpacity onPress={dispBack}>
+                    <Image
+                        resizeMode="contain"
+                        style={styles.backIcon} 
+                        source={require('../assets/arrowback.png')}
+                    />
+                </TouchableOpacity>
+            </Animatable.View>
             <Animatable.View animation={bounceInDown}>
                 <Image source={logo} style={styles.logo} />
             </Animatable.View>
@@ -193,6 +202,24 @@ const styles = StyleSheet.create({
         color: "white",
         fontFamily: 'Montserrat_400Regular',
     },
+    backContainer: {
+        position: 'absolute',
+        flex:1,
+        left:0,
+        width: '100%',
+        height: '100%',
+        // backgroundColor:'red',
+        justifyContent:'flex-start',
+        alignItems:'flex-start',
+        alignSelf:'center',
+    },
+    back:{
+        fontSize: 24,
+        fontFamily: 'SuezOne_400Regular',
+        color: "#FFFFFF",
+        marginTop:20,
+        marginLeft:30,
+    },
     partend: {
         position: 'absolute',
         top: 0,
@@ -248,6 +275,11 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20,
         marginLeft: 10,
+    },
+    backIcon: {
+        height: 24,
+        width: 30,
+        marginLeft:30,
     },
     name: {
         fontFamily: 'SuezOne_400Regular',
