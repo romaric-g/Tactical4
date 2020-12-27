@@ -20,6 +20,9 @@ export default class Room {
     }
 
     join(player: Player) : void {
+        if (player.room) {
+            player.onLeave();
+        }
         this.players.push(player);
         player.setRoom(this);
 
