@@ -137,7 +137,7 @@ const Game = () => {
     return (
         <View style={styles.container}>
             <View style={styles.addpadding}>
-                <Animatable.View key={1} animation={bounceInRight}>
+                <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
                     <Puissance4
                         key={1000}
                         grid={gameState.grid} 
@@ -175,9 +175,6 @@ const Game = () => {
                             </Animatable.View>
                         </View>
                     </View>
-                    <Animatable.View animation={bounceInUp}>
-                        <Image style={styles.image} source={require('./../assets/logo.png')} />
-                    </Animatable.View>
                     <View style={styles.emoteButtonContainer}>
                         <Animatable.View animation={bounceInUp}>
                             <Button>Emote</Button>
@@ -256,8 +253,14 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: "cover",
     },
+    contentpuissance4:{
+        flex:1,
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+    },
     addpadding:{
-        padding: 20,
+        padding: 30,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -301,7 +304,7 @@ const styles = StyleSheet.create({
     },
     content: {
         height: "100%",
-        flex: 1,
+        flex: 0.5,
         paddingLeft: 40,
         display: "flex",
         flexDirection: "column",
@@ -341,8 +344,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left:0,
-        width: '200%',
-        height: '200%',
+        width: '100%',
+        height: '100%',
         flex:1,
         backgroundColor:'rgba(4, 9, 27, 0.96)',
     },

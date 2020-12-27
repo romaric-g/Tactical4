@@ -6,7 +6,7 @@ import {bounceInDown, bounceInDownJeton, bounceInUp, bounceInRight, bounceInLeft
 import socket from '../connection';
 import Models from '../types/Models';
 
-const columns = [0,1,2,3,4,5,6,7,8];
+const columns = [0,1,2,3,4,5,6];
 const rows = [1,2,3,4,5,6];
 
 interface Props {
@@ -58,6 +58,7 @@ export default function Puissance4(props: Props) {
       </View>
     ))
   ), [currentPlayer, canPlay, grid]);
+  
 
   return (
     <View style={styles.container}>
@@ -76,14 +77,15 @@ const styles = StyleSheet.create({
     position: "relative",
     flexDirection: 'row',
     width: 459,
-    height: 300.7
+    height: 300.7,
+    justifyContent:'center'
   },
   col: {
     display: 'flex',
     flexDirection: 'column-reverse',
     height:'100%',
     marginRight: 12.39,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   grid: {
     height: 309,
