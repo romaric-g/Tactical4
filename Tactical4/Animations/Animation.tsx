@@ -84,12 +84,12 @@ export const bounceInDownJeton = {
       opacity: 0,
       translateY: -2000,
     },
-    0.8: {
+    0.6: {
       opacity: 1,
       translateY: -5,
     },
-    0.9: {
-        translateY: -20,
+    0.8: {
+        translateY: -10,
     },
     1: {
       translateY: -5,
@@ -167,14 +167,18 @@ export const bounceInRightYourTurn = {
         opacity: 0,
         translateX: -2000,
     },
-    0.3: {
+    0.4: {
+        opacity: 0,
+        translateX: -2000,
+    },
+    0.5: {
         opacity: 1,
         translateX: 10,
     },
-    0.4: {
+    0.6: {
         translateX: -10,
     },
-    0.5: {
+    0.7: {
         translateX: 0,
     },
     0.9: {
@@ -189,11 +193,15 @@ export const fadeIn400YourTurn = {
         opacity: 0,
         scale: 1,
     },
-    0.2: {
-        opacity: 1,
+    0.4: {
+        opacity: 0,
         scale: 1,
     },
     0.5: {
+        opacity: 1,
+        scale: 1,
+    },
+    0.6: {
         opacity: 1,
         scale: 1,
     },

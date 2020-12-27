@@ -158,22 +158,42 @@ const Game = () => {
                                 </LinearGradient>
                             </TouchableOpacity>
                         </Animatable.View>
-                        <View style={{width: "100%",marginTop:15,}}>
-                            <Animatable.View animation={bounceInRight}>
-                                <PlayerInfo 
-                                    name={gameState.player1?.name}
-                                    rank={1}
-                                    score={gameState.score[0]}
-                                />
-                            </Animatable.View>
-                            <Animatable.View animation={bounceInRight}>
-                                <PlayerInfo 
-                                    name={gameState.player2?.name}
-                                    rank={2}
-                                    score={gameState.score[1]}
-                                />
-                            </Animatable.View>
-                        </View>
+                        {gameState.score[0] >= gameState.score[1] &&
+                            <View style={{width: "100%",marginTop:15,}}>
+                                <Animatable.View animation={bounceInRight}>
+                                    <PlayerInfo 
+                                        name={gameState.player1?.name}
+                                        rank={1}
+                                        score={gameState.score[0]}
+                                    />
+                                </Animatable.View>
+                                <Animatable.View animation={bounceInRight}>
+                                    <PlayerInfo 
+                                        name={gameState.player2?.name}
+                                        rank={2}
+                                        score={gameState.score[1]}
+                                    />
+                                </Animatable.View>
+                            </View>
+                        }
+                        {gameState.score[0] < gameState.score[1] &&
+                            <View style={{width: "100%",marginTop:15,}}>
+                                <Animatable.View animation={bounceInRight}>
+                                    <PlayerInfo 
+                                        name={gameState.player2?.name}
+                                        rank={2}
+                                        score={gameState.score[1]}
+                                    />
+                                </Animatable.View>
+                                <Animatable.View animation={bounceInRight}>
+                                    <PlayerInfo 
+                                        name={gameState.player1?.name}
+                                        rank={1}
+                                        score={gameState.score[0]}
+                                    />
+                                </Animatable.View>
+                            </View>
+                        }
                     </View>
                     <View style={styles.emoteButtonContainer}>
                         <Animatable.View animation={bounceInUp}>
