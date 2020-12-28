@@ -10,8 +10,10 @@ import { useMediaQuery } from "react-responsive";
 import DispAlert from '../Components/DispAlert'
 import socket from '../connection';
 import Models from '../types/Models';
+import Chat, { ChatMessage } from '../Components/Chat';
 
 const logo = require('../assets/logo.png');
+
 
 const Room = () => {
 
@@ -42,6 +44,20 @@ const Room = () => {
     const history = useHistory();
     const [Back, setBack] = useState(false)
     const [copyarlert, setcopyarlert] = useState(false)
+    const [ messages, setMessages ] = React.useState<ChatMessage[]>([])
+
+    const pushMessage = React.useCallback((message: string) => {
+        console.log("PUSH");
+        console.log(messages)
+        const newMessages = [
+            ...messages, 
+            {
+                message: message,
+                created: Date.now()
+            }
+        ]
+        setMessages(newMessages);
+    }, [setMessages, messages])
 
     const textRef = React.useRef<TextInput>(null)
 
@@ -57,7 +73,6 @@ const Room = () => {
             });
         }
         
-        
         socket.emit("GetRoomInfo", null, (res: Models.GetRoomInfoResponse) => {
             console.log(res)
             if (res.success) {
@@ -67,6 +82,15 @@ const Room = () => {
         
         const roomPlayerListChange = (event: Models.RoomPlayerListChangeEvent) => {
             setPlayersName(event.playersName);
+            console.log("room player")
+            switch(event.reason) {
+                case 'join':
+                    return pushMessage(`${ event.playerName } a rejoint la partie`);
+                case 'kick':
+                    return pushMessage(`${ event.playerName } a été exclu de la partie`);
+                case 'leave':
+                    return pushMessage(`${ event.playerName } a quitté la partie`)
+            }
         }
 
         const roomStart = (event: Models.RoomStartEvent) => {
@@ -82,7 +106,8 @@ const Room = () => {
         }
     }, []);
 
-    
+    console.log(messages)
+
     const canStart = React.useMemo(() => playersName.length == 2, [playersName])
 
     const startRoom = React.useCallback(() => {
@@ -142,6 +167,7 @@ const Room = () => {
     if (isTabletOrMobileDevice) {
         return (
             <View style={styles.containerfirst}>
+                <Chat messages={messages} />
                 <View style={styles.container}>
                     <Animatable.View animation={bounceInRight} style={styles.backContainer}>
                         <TouchableOpacity onPress={dispBack}>
@@ -222,6 +248,7 @@ const Room = () => {
     }
     return (
         <View style={styles.containerfirst}>
+            <Chat messages={messages} />
             <View style={styles.containercomputer}>
                 <Animatable.View animation={bounceInRight} style={styles.backContainer}>
                     <TouchableOpacity onPress={dispBack}>

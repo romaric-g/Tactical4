@@ -52,6 +52,7 @@ const Home = () => {
         }
     },[]);
 
+
     const joinRoom = React.useCallback(() => {
         const joinRoomParams: Models.JoinRoomParams = {
             settings: {
