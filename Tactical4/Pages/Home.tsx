@@ -4,6 +4,8 @@ import * as Animatable from 'react-native-animatable';
 import {bounceInDown, bounceInLeft, bounceInUp} from '../Animations/Animation';
 import { useHistory } from 'react-router';
 import Button from '../Components/Button';
+import '@expo/match-media'
+import { useMediaQuery } from "react-responsive";
 import DispAlert from '../Components/DispAlert';
 import Credits from '../Components/Credits'
 import Models from '../types/Models';
@@ -12,6 +14,18 @@ import socket from './../connection'
 const logo = require('../assets/logo.png');
 
 const Home = () => {
+
+    const isTabletOrMobileDevice = useMediaQuery({    
+        maxDeviceWidth: 1224,
+        // alternatively...
+        query: "(max-device-width: 1224px)"  
+    });
+    const haveToRotate = useMediaQuery({    
+        maxDeviceWidth: 650,
+        // alternatively...
+        query: "(max-device-width: 650px)"  
+    });
+    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
     const history = useHistory();
     const [Credit, setCredit] = useState(false)
@@ -60,14 +74,87 @@ const Home = () => {
     const dispCredit= () => {
         setCredit(!Credit)
     };
+    if (haveToRotate || isPortrait) {
+        return (
+            <View style={styles.containerportrait}>
+                <Image style={styles.turnyourdevice} source={require('./../assets/turndevice.gif')} />
+                <Text style={styles.textportrait}>Tourne ton écran ou élargis ta fenêtre pour une meilleure expérience.</Text>
+            </View>
+        )
+    }
+    if (isTabletOrMobileDevice) {
+        return (
+            <View style={styles.container}>
+                <Animatable.View animation={bounceInLeft} style={styles.creditContainer}>
+                    <TouchableOpacity onPress={dispCredit}>
+                        <Text style={styles.credit}>Crédits</Text>
+                    </TouchableOpacity>
+                </Animatable.View>
+                <View style={styles.addpadding}>
+                    <Animatable.View animation={bounceInDown}>
+                        <Image source={logo} style={styles.logo} />
+                    </Animatable.View>
+                    <View style={styles.pageContent}>
+                        <Animatable.View animation={bounceInDown}>
+                            <TextInput
+                                style={styles.name}
+                                onChangeText={setName}
+                                value={name}
+                                placeholder="Nom"
+                                placeholderTextColor="#686D7F"
+                                disableFullscreenUI
+                                maxLength={10}
+                            />
+                        </Animatable.View>
+                        <Animatable.View animation={bounceInUp}>
+                            <View style={styles.footer}>
+                                <TextInput
+                                    style={styles.code}
+                                    onChangeText={(text) => setCode(text.toUpperCase())}
+                                    autoCapitalize="characters"
+                                    onSubmitEditing={joinRoom}
+                                    value={code}
+                                    maxLength={6}
+                                    placeholder="Rejoindre une partie"
+                                    placeholderTextColor="#686D7F"
+                                    disableFullscreenUI
+                                />
+                                <TouchableOpacity onPress={joinRoom}>
+                                    <View style={styles.submitArrow}>
+                                        <Image style={styles.arrow} source={require('./../assets/arrowsend.png')} />
+                                    </View>
+                                </TouchableOpacity>
+                                <Button onPress={createRoom} >Créer une partie</Button>
+                            </View>
+                        </Animatable.View>
+                    </View>
+                </View>
+                {/* <View style={styles.partend}>
+                    <DispAlert
+                    Message={"Ton adversaire a quitté la partie."}
+                    GoHome={true}
+                    />
+                </View> */}
+
+                {Credit &&
+                    <View style={styles.partend}>
+                        <Credits
+                        Close={dispCredit}
+                        />
+                    </View>
+                }
+            </View>
+            // "MjczOTE0NzM2ODA1MTUwNzMx.XzBbuQ.5qp_vG4HsWgviy25Opt9MlVTQX0"
+        )
+    }
     return (
-        <View style={styles.container}>
+        <View style={styles.containercomputer}>
             <Animatable.View animation={bounceInLeft} style={styles.creditContainer}>
                 <TouchableOpacity onPress={dispCredit}>
                     <Text style={styles.credit}>Crédits</Text>
                 </TouchableOpacity>
             </Animatable.View>
-            <View style={styles.addpadding}>
+            <View style={styles.addpaddingcomputer}>
                 <Animatable.View animation={bounceInDown}>
                     <Image source={logo} style={styles.logo} />
                 </Animatable.View>
@@ -135,9 +222,42 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // backgroundColor:'green'
     },
+    containerportrait:{
+        height: "100%",
+        width:"100%",
+        flex: 1,
+        alignItems: "center",
+        justifyContent:"center",
+    },
+    textportrait:{
+        color:"white",
+        fontFamily:'Montserrat_700Bold',
+        fontSize:24,
+        textAlign:"center",
+        maxWidth:"80%",
+    },
+    turnyourdevice:{
+        width:70,
+        height:70,
+        marginBottom:30,
+    },
+    containercomputer: {
+        height: "100%",
+        color: "white",
+        // padding: 30,
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
+        justifyContent:'center',
+    },
     addpadding:{
         padding: 30,
         height:'100%',
+        alignItems: "center"
+    },
+    addpaddingcomputer:{
+        padding: 30,
+        height:'60%',
         alignItems: "center"
     },
     arrow:{
