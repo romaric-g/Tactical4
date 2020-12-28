@@ -27,6 +27,7 @@ const Game = () => {
         // alternatively...
         query: "(max-device-width: 650px)"  
     });
+    const [scalegrid, setscalegrid] = useState(false);
     const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
     const history = useHistory();
@@ -36,6 +37,18 @@ const Game = () => {
     const [Back, setBack] = useState(false)
 
     React.useEffect(() => {
+        window.addEventListener('resize', (event) => {
+            if(window.innerWidth >= 1050){
+                setscalegrid(true);
+                console.log("true")
+            }else{
+                setscalegrid(false);
+                console.log("false")
+            }
+        });
+        if(window.innerWidth >= 1050){
+            setscalegrid(true);
+        }
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
             window.history.pushState(null, document.title, window.location.href);
             window.addEventListener('popstate', function (event){
@@ -288,12 +301,14 @@ const Game = () => {
         <View style={styles.containerfirst}>
             <View style={styles.containercomputer}>
                 <View style={styles.addpaddingcomputer}>
+                    
                     <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
                         <Puissance4
                             key={1000}
                             grid={gameState.grid} 
                             canPlay={canPlay}
                             currentPlayer={gameState.currentPlayer}
+                            scalemuch={scalegrid}
                         />
                     </Animatable.View>
                     <View style={styles.content}>
