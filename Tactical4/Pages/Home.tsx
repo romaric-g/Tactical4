@@ -37,6 +37,7 @@ const Home = () => {
     const [ name, setName ] = React.useState(Cookies.get("name") || "");
     const [ code, setCode ] = React.useState("");
 
+
     const joinRoom = React.useCallback(() => {
         const joinRoomParams: Models.JoinRoomParams = {
             settings: {
