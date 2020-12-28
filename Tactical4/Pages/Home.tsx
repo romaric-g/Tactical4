@@ -11,10 +11,10 @@ import Models from '../types/Models';
 import socket from './../connection'
 
 const logo = require('../assets/logo.png');
+ReactGA.initialize('G-HC358Y7S2D');
 
 const Home = () => {
 
-    ReactGA.initialize('G-HC358Y7S2D');
     ReactGA.pageview("Home");
 
     const history = useHistory();
