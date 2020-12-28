@@ -9,7 +9,7 @@ interface Position {
 export default class Grid {
     private room: Room;
     public readonly height = 6;
-    public readonly width = 9;
+    public readonly width = 7;
     public points: number[][];
     public currentPlayerNumber = Math.floor(Math.random() * 2) + 1;
     public lastPlacement: Position | null = null; 

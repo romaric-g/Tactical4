@@ -25,13 +25,18 @@
         "backgroundColor": "#FFFFFF"
       }
     },
+    "androidStatusBar": {
+      "backgroundColor": "#04091B",
+      "translucent": false
+    },
     "web": {
       "favicon": "./assets/favicon.png",
       "build": {
         "babel": {
           "include": ["react-router-native"]
         }
-      }
+      },
+      "themeColor": "#04091B"
     }
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions  } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import ReactGA from 'react-ga';
+import Cookies from 'js-cookie'
 import {bounceInDown, bounceInLeft, bounceInUp} from '../Animations/Animation';
 import { useHistory } from 'react-router';
 import Button from '../Components/Button';
@@ -12,15 +13,14 @@ import socket from './../connection'
 
 const logo = require('../assets/logo.png');
 ReactGA.initialize('G-HC358Y7S2D');
+ReactGA.pageview("Home");
 
 const Home = () => {
-
-    ReactGA.pageview("Home");
 
     const history = useHistory();
     const [Credit, setCredit] = useState(false)
 
-    const [ name, setName ] = React.useState("");
+    const [ name, setName ] = React.useState(Cookies.get("name") || "");
     const [ code, setCode ] = React.useState("");
 
     const joinRoom = React.useCallback(() => {
@@ -79,7 +79,10 @@ const Home = () => {
                     <Animatable.View animation={bounceInDown}>
                         <TextInput
                             style={styles.name}
-                            onChangeText={setName}
+                            onChangeText={(name) => {
+                                Cookies.set('name', name)
+                                setName(name)
+                            }}
                             value={name}
                             placeholder="Nom"
                             placeholderTextColor="#686D7F"
