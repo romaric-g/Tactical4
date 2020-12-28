@@ -67,7 +67,7 @@ var styles = StyleSheet.create({
         flex:1,
         height:'100%',
         width:'100%',
-        padding: 30,
+        // padding: 30,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -76,6 +76,7 @@ var styles = StyleSheet.create({
         justifyContent:'center',
     },
     Bg: {
+        flex:1,
         position: 'absolute',
         top: 0,
         left:0,

@@ -71,7 +71,7 @@ var styles = StyleSheet.create({
     Container: {
         height: "100%",
         width:"100%",
-        padding: 30,
+        // padding: 30,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",

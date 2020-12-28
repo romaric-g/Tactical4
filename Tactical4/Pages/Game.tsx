@@ -135,70 +135,72 @@ const Game = () => {
     )
 
     return (
-        <View style={styles.container}>
-            <View style={styles.addpadding}>
-                <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
-                    <Puissance4
-                        key={1000}
-                        grid={gameState.grid} 
-                        canPlay={canPlay}
-                        currentPlayer={gameState.currentPlayer}
-                    />
-                </Animatable.View>
-                <View style={styles.content}>
-                    <View style={{width: "100%"}}>
-                        <Animatable.View animation={bounceInLeft}>
-                            <TouchableOpacity onPress={dispMenu} style={styles.menuButton}>
-                                <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
-                                    <View style={styles.menuBarContent}>
-                                        <View style={styles.menuBar1}></View>
-                                        <View style={styles.menuBar2}></View>
-                                        <View style={styles.menuBar1}></View>
-                                    </View>
-                                </LinearGradient>
-                            </TouchableOpacity>
-                        </Animatable.View>
-                        {gameState.score[0] >= gameState.score[1] &&
-                            <View style={{width: "100%",marginTop:15,}}>
-                                <Animatable.View animation={bounceInRight}>
-                                    <PlayerInfo 
-                                        name={gameState.player1?.name}
-                                        rank={1}
-                                        score={gameState.score[0]}
-                                    />
-                                </Animatable.View>
-                                <Animatable.View animation={bounceInRight}>
-                                    <PlayerInfo 
-                                        name={gameState.player2?.name}
-                                        rank={2}
-                                        score={gameState.score[1]}
-                                    />
-                                </Animatable.View>
-                            </View>
-                        }
-                        {gameState.score[0] < gameState.score[1] &&
-                            <View style={{width: "100%",marginTop:15,}}>
-                                <Animatable.View animation={bounceInRight}>
-                                    <PlayerInfo 
-                                        name={gameState.player2?.name}
-                                        rank={2}
-                                        score={gameState.score[1]}
-                                    />
-                                </Animatable.View>
-                                <Animatable.View animation={bounceInRight}>
-                                    <PlayerInfo 
-                                        name={gameState.player1?.name}
-                                        rank={1}
-                                        score={gameState.score[0]}
-                                    />
-                                </Animatable.View>
-                            </View>
-                        }
-                    </View>
-                    <View style={styles.emoteButtonContainer}>
-                        <Animatable.View animation={bounceInUp}>
-                            <Button>Emote</Button>
-                        </Animatable.View>
+        <View style={styles.containerfirst}>
+            <View style={styles.container}>
+                <View style={styles.addpadding}>
+                    <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
+                        <Puissance4
+                            key={1000}
+                            grid={gameState.grid} 
+                            canPlay={canPlay}
+                            currentPlayer={gameState.currentPlayer}
+                        />
+                    </Animatable.View>
+                    <View style={styles.content}>
+                        <View style={{width: "100%"}}>
+                            <Animatable.View animation={bounceInLeft}>
+                                <TouchableOpacity onPress={dispMenu} style={styles.menuButton}>
+                                    <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
+                                        <View style={styles.menuBarContent}>
+                                            <View style={styles.menuBar1}></View>
+                                            <View style={styles.menuBar2}></View>
+                                            <View style={styles.menuBar1}></View>
+                                        </View>
+                                    </LinearGradient>
+                                </TouchableOpacity>
+                            </Animatable.View>
+                            {gameState.score[0] >= gameState.score[1] &&
+                                <View style={{width: "100%",marginTop:15,}}>
+                                    <Animatable.View animation={bounceInRight}>
+                                        <PlayerInfo 
+                                            name={gameState.player1?.name}
+                                            rank={1}
+                                            score={gameState.score[0]}
+                                        />
+                                    </Animatable.View>
+                                    <Animatable.View animation={bounceInRight}>
+                                        <PlayerInfo 
+                                            name={gameState.player2?.name}
+                                            rank={2}
+                                            score={gameState.score[1]}
+                                        />
+                                    </Animatable.View>
+                                </View>
+                            }
+                            {gameState.score[0] < gameState.score[1] &&
+                                <View style={{width: "100%",marginTop:15,}}>
+                                    <Animatable.View animation={bounceInRight}>
+                                        <PlayerInfo 
+                                            name={gameState.player2?.name}
+                                            rank={2}
+                                            score={gameState.score[1]}
+                                        />
+                                    </Animatable.View>
+                                    <Animatable.View animation={bounceInRight}>
+                                        <PlayerInfo 
+                                            name={gameState.player1?.name}
+                                            rank={1}
+                                            score={gameState.score[0]}
+                                        />
+                                    </Animatable.View>
+                                </View>
+                            }
+                        </View>
+                        <View style={styles.emoteButtonContainer}>
+                            <Animatable.View animation={bounceInUp}>
+                                <Button>Emote</Button>
+                            </Animatable.View>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -272,6 +274,12 @@ const styles = StyleSheet.create({
         color: "white",
         flex: 1,
         resizeMode: "cover",
+    },
+    containerfirst: {
+        height: "100%",
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
     },
     contentpuissance4:{
         flex:1,
