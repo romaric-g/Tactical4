@@ -13,6 +13,7 @@ interface Props {
   grid: number[][],
   canPlay: boolean,
   currentPlayer: number,
+  scalemuch?: boolean,
   // win: Models.WinState
 }
 
@@ -23,6 +24,7 @@ export default function Puissance4(props: Props) {
     canPlay,
     currentPlayer,
     // win
+    scalemuch,
   } = props;
 
   const play = React.useCallback((column: number) => {
@@ -59,9 +61,20 @@ export default function Puissance4(props: Props) {
     ))
   ), [currentPlayer, canPlay, grid]);
   
-
+  if(scalemuch === true){
+    return (
+      <View style={[styles.container,{transform: [{ scale: 1.5 }]}]}>
+        {createCircle()}
+        {/* <Image
+            resizeMode="contain"
+            style={styles.grid} 
+            source={require('../assets/svggrid.png')}
+        /> */}
+      </View>
+    );
+  }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{transform: [{ scale: 1 }]}]}>
       {createCircle()}
       {/* <Image
           resizeMode="contain"
