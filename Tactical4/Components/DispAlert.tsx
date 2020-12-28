@@ -53,7 +53,7 @@ var styles = StyleSheet.create({
     Container: {
         height: "100%",
         width:"100%",
-        padding: 30,
+        // padding: 30,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -66,6 +66,7 @@ var styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left:0,
+        flex:1,
         width: '100%',
         height: '100%',
         backgroundColor:'rgba(4, 9, 27, 0.96)',

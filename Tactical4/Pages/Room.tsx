@@ -106,58 +106,60 @@ const Room = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Animatable.View animation={bounceInRight} style={styles.backContainer}>
-                <TouchableOpacity onPress={dispBack}>
-                    <Image
-                        resizeMode="contain"
-                        style={styles.backIcon} 
-                        source={require('../assets/arrowback.png')}
-                    />
-                </TouchableOpacity>
-            </Animatable.View>
-            <Animatable.View animation={bounceInDown}>
-                <Image source={logo} style={styles.logo} />
-            </Animatable.View>
-            <View style={styles.pageContent}>
-                <View>
-                    <Animatable.View animation={bounceInRight}>
-                        <Text style={styles.counterPlayer}>Joueurs [{playersName.length}/2]</Text>
-                    </Animatable.View>
-                    {playersName.map((playerName, index) => 
-                        <Animatable.View key={index} animation={bounceInRight}>
-                            <Text key={index} style={styles.playerName}>{(playerName || "?")}</Text>
+        <View style={styles.containerfirst}>
+            <View style={styles.container}>
+                <Animatable.View animation={bounceInRight} style={styles.backContainer}>
+                    <TouchableOpacity onPress={dispBack}>
+                        <Image
+                            resizeMode="contain"
+                            style={styles.backIcon} 
+                            source={require('../assets/arrowback.png')}
+                        />
+                    </TouchableOpacity>
+                </Animatable.View>
+                <Animatable.View animation={bounceInDown}>
+                    <Image source={logo} style={styles.logo} />
+                </Animatable.View>
+                <View style={styles.pageContent}>
+                    <View>
+                        <Animatable.View animation={bounceInRight}>
+                            <Text style={styles.counterPlayer}>Joueurs [{playersName.length}/2]</Text>
                         </Animatable.View>
-                    )}
-                </View>
-                <View style={styles.footer}>
-                    <Animatable.View animation={bounceInUp}>
-                        <View style={styles.containerInput}>
-                            <TouchableOpacity onPress={focusTextInput} style={styles.input}> 
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder={params.code}
-                                    placeholderTextColor="#686D7F"
-                                    value = {params.code}
-                                    disableFullscreenUI
-                                    selectTextOnFocus
-                                    ref={textRef}
-                                >
-                                </TextInput>
-                            </TouchableOpacity> 
-                            <View style={styles.secondePartieInput}>
-                                <View style={styles.traitSeparationInput}></View>
-                                <TouchableOpacity onPress={copyCodeToCB}> 
-                                    <Image
-                                        resizeMode="contain"
-                                        style={styles.shareIcon} 
-                                        source={require('../assets/share.png')}
-                                    />
+                        {playersName.map((playerName, index) => 
+                            <Animatable.View key={index} animation={bounceInRight}>
+                                <Text key={index} style={styles.playerName}>{(playerName || "?")}</Text>
+                            </Animatable.View>
+                        )}
+                    </View>
+                    <View style={styles.footer}>
+                        <Animatable.View animation={bounceInUp}>
+                            <View style={styles.containerInput}>
+                                <TouchableOpacity onPress={focusTextInput} style={styles.input}> 
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder={params.code}
+                                        placeholderTextColor="#686D7F"
+                                        value = {params.code}
+                                        disableFullscreenUI
+                                        selectTextOnFocus
+                                        ref={textRef}
+                                    >
+                                    </TextInput>
                                 </TouchableOpacity> 
+                                <View style={styles.secondePartieInput}>
+                                    <View style={styles.traitSeparationInput}></View>
+                                    <TouchableOpacity onPress={copyCodeToCB}> 
+                                        <Image
+                                            resizeMode="contain"
+                                            style={styles.shareIcon} 
+                                            source={require('../assets/share.png')}
+                                        />
+                                    </TouchableOpacity> 
+                                </View>
                             </View>
-                        </View>
-                        <Button onPress={startRoom}>{ !canStart ? "Joueur en attente..." : "Lancer la partie"}</Button>
-                    </Animatable.View>
+                            <Button onPress={startRoom}>{ !canStart ? "Joueur en attente..." : "Lancer la partie"}</Button>
+                        </Animatable.View>
+                    </View>
                 </View>
             </View>
             {Back &&
@@ -187,10 +189,17 @@ const Room = () => {
 const styles = StyleSheet.create({
     container: {
       height: "100%",
+      width:"100%",
       flex: 1,
       resizeMode: "cover",
       alignItems: "center",
-      padding: 30
+      padding: 30,
+    },
+    containerfirst: {
+        height: "100%",
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
     },
     counterPlayer: {
         fontSize: 36,
@@ -206,6 +215,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         flex:1,
         left:0,
+        top:30,
         width: '100%',
         height: '100%',
         // backgroundColor:'red',
@@ -214,16 +224,13 @@ const styles = StyleSheet.create({
         alignSelf:'center',
     },
     back:{
-        fontSize: 24,
-        fontFamily: 'SuezOne_400Regular',
-        color: "#FFFFFF",
-        marginTop:20,
         marginLeft:30,
     },
     partend: {
         position: 'absolute',
         top: 0,
         left:0,
+        flex:1,
         width: '100%',
         height: '100%',
     },
