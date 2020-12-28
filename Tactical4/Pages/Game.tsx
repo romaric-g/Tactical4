@@ -4,6 +4,8 @@ import * as Animatable from 'react-native-animatable';
 import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn, minify} from '../Animations/Animation';
 import Button from '../Components/Button';
 import PlayerInfo from '../Components/PlayerInfo';
+import '@expo/match-media'
+import { useMediaQuery } from "react-responsive";
 import Puissance4 from '../Components/Puissance4';
 import PartyEnd from '../Components/PartyEnd';
 import DispAlert from '../Components/DispAlert';
@@ -14,6 +16,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useHistory } from 'react-router';
 
 const Game = () => {
+
+    const isTabletOrMobileDevice = useMediaQuery({    
+        maxDeviceWidth: 1224,
+        // alternatively...
+        query: "(max-device-width: 1224px)"  
+    });
+    const haveToRotate = useMediaQuery({    
+        maxDeviceWidth: 650,
+        // alternatively...
+        query: "(max-device-width: 650px)"  
+    });
+    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
     const history = useHistory();
 
@@ -133,11 +147,147 @@ const Game = () => {
     if (!gameState) return (
         <ActivityIndicator />
     )
-
+    if (haveToRotate || isPortrait) {
+        return (
+            <View style={styles.containerportrait}>
+                <Image style={styles.turnyourdevice} source={require('./../assets/turndevice.gif')} />
+                <Text style={styles.textportrait}>Tourne ton écran ou élargis ta fenêtre pour une meilleure expérience.</Text>
+            </View>
+        )
+    }
+    if (isTabletOrMobileDevice) {
+        return (
+            <View style={styles.containerfirst}>
+                <View style={styles.container}>
+                    <View style={styles.addpadding}>
+                        <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
+                            <Puissance4
+                                key={1000}
+                                grid={gameState.grid} 
+                                canPlay={canPlay}
+                                currentPlayer={gameState.currentPlayer}
+                            />
+                        </Animatable.View>
+                        <View style={styles.content}>
+                            <View style={{width: "100%"}}>
+                                <Animatable.View animation={bounceInLeft}>
+                                    <TouchableOpacity onPress={dispMenu} style={styles.menuButton}>
+                                        <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
+                                            <View style={styles.menuBarContent}>
+                                                <View style={styles.menuBar1}></View>
+                                                <View style={styles.menuBar2}></View>
+                                                <View style={styles.menuBar1}></View>
+                                            </View>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
+                                </Animatable.View>
+                                {gameState.score[0] >= gameState.score[1] &&
+                                    <View style={{width: "100%",marginTop:15,}}>
+                                        <Animatable.View animation={bounceInRight}>
+                                            <PlayerInfo 
+                                                name={gameState.player1?.name}
+                                                rank={1}
+                                                score={gameState.score[0]}
+                                            />
+                                        </Animatable.View>
+                                        <Animatable.View animation={bounceInRight}>
+                                            <PlayerInfo 
+                                                name={gameState.player2?.name}
+                                                rank={2}
+                                                score={gameState.score[1]}
+                                            />
+                                        </Animatable.View>
+                                    </View>
+                                }
+                                {gameState.score[0] < gameState.score[1] &&
+                                    <View style={{width: "100%",marginTop:15,}}>
+                                        <Animatable.View animation={bounceInRight}>
+                                            <PlayerInfo 
+                                                name={gameState.player2?.name}
+                                                rank={2}
+                                                score={gameState.score[1]}
+                                            />
+                                        </Animatable.View>
+                                        <Animatable.View animation={bounceInRight}>
+                                            <PlayerInfo 
+                                                name={gameState.player1?.name}
+                                                rank={1}
+                                                score={gameState.score[0]}
+                                            />
+                                        </Animatable.View>
+                                    </View>
+                                }
+                            </View>
+                            <View style={styles.emoteButtonContainer}>
+                                <Animatable.View animation={bounceInUp}>
+                                    <Button>Emote</Button>
+                                </Animatable.View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+                {playnow &&
+                    <View pointerEvents='none' style={styles.yourTurn}>
+                        <Animatable.View animation={fadeIn400YourTurn} duration={3500} style={styles.yourTurnBg}>
+                        </Animatable.View>
+                        <View style={styles.yourTurnContent}>
+                            <Animatable.View animation={bounceInRightYourTurn} duration={3000}>
+                                <Image style={styles.you} source={require('./../assets/you.png')} />
+                            </Animatable.View>
+                            <Animatable.View animation={bounceInRightYourTurn} duration={3500}>
+                                <Text style={styles.yourTurnText}>À TOI DE JOUER !</Text>
+                            </Animatable.View>
+                        </View>
+                    </View>
+                }
+                {gameState.win &&
+                    <View style={styles.partend}>
+                        <PartyEnd
+                        Winner={winner}
+                        Loser={loser}
+                        WinnerScore= {winnerScore}
+                        LoserScore= {loserScore}
+                        Win ={win}
+                        />
+                    </View>
+                }
+                {Menu &&
+                    <View style={styles.partend}>
+                        <MenuInGame
+                            menuProp={Menu}
+                            quitRoom={quitRoom}
+                            dispMenu={dispMenu}
+                        />
+                    </View>
+                }
+                {!gameState.win && !Menu && Back &&
+                    <View style={styles.partend}>
+                        <DispAlert
+                            message={"Quitter la partie en cours?"}
+                            type="requestHome"
+                            quitRoom={quitRoom}
+                            dispBack={dispBack}
+                        />
+                    </View>
+                }
+                {gameState.leave &&
+                    <View style={styles.partend}>
+                        <DispAlert
+                            message={"Votre adversaire a quitter la partie"}
+                            type="forceHome"
+                            quitRoom={quitRoom}
+                            dispBack={dispBack}
+                        />
+                    </View>
+                }
+            </View>
+        )
+    }
+    // <Animatable.View key={1} animation={bounceInRight} style={[styles.contentpuissance4, {transform: [{ translateY: -45 }]} ]}></Animatable.View>
     return (
         <View style={styles.containerfirst}>
-            <View style={styles.container}>
-                <View style={styles.addpadding}>
+            <View style={styles.containercomputer}>
+                <View style={styles.addpaddingcomputer}>
                     <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
                         <Puissance4
                             key={1000}
@@ -275,8 +425,48 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: "cover",
     },
+    containerportrait:{
+        height: "100%",
+        width:"100%",
+        flex: 1,
+        alignItems: "center",
+        justifyContent:"center",
+    },
+    textportrait:{
+        color:"white",
+        fontFamily:'Montserrat_700Bold',
+        fontSize:24,
+        textAlign:"center",
+        maxWidth:"80%",
+    },
+    turnyourdevice:{
+        width:70,
+        height:70,
+        marginBottom:30,
+    },
+    containercomputer: {
+        height: "100%",
+        width:'100%',
+        color: "white",
+        // padding: 30,
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
+        justifyContent:'center',
+        // backgroundColor:'green'
+    },
+    addpaddingcomputer:{
+        paddingVertical: 150,
+        paddingHorizontal: 30,
+        display:'flex',
+        flexDirection:'row',
+        height:'100%',
+        width:'100%',
+        alignItems: "center"
+    },
     containerfirst: {
         height: "100%",
+        width:'100%',
         flex: 1,
         resizeMode: "cover",
         alignItems: "center",
