@@ -118,7 +118,10 @@ const Home = () => {
                         <Animatable.View animation={bounceInDown}>
                             <TextInput
                                 style={styles.name}
-                                onChangeText={setName}
+                                onChangeText={(name) => {
+                                    Cookies.set('name', name)
+                                    setName(name)
+                                }}
                                 value={name}
                                 placeholder="Nom"
                                 placeholderTextColor="#686D7F"
