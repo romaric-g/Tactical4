@@ -10,7 +10,7 @@ class PlayerController {
    }
 
    joinRoom (params: Models.JoinRoomParams, callback: (res: Models.SocketResponse) => void) {
-      this.player.setName(params.settings.name.substring(2, 5));
+      this.player.setName(params.settings.name);
       if (!params.code) {
          return callback({
             success: false,
@@ -19,7 +19,13 @@ class PlayerController {
       }
       const code = params.code;
       const room = RoomManager.getRoom(code);
-      if(room) {
+      if(!this.player.name) {
+         return callback({
+            success: false,
+            message: "Vous n'avez pas indiqué votre pseudo"
+         })
+      }
+      else if(room) {
          room.join(this.player)
          return callback({
                success: true
@@ -34,6 +40,12 @@ class PlayerController {
 
    createRoom (params: Models.CreateRoomParams, callback: (res: Models.CreateRoomResponse) => void) {
       this.player.setName(params.settings.name);
+      if(!this.player.name) {
+         return callback({
+            success: false,
+            message: "Vous n'avez pas indiqué votre pseudo"
+         })
+      }
       const room = RoomManager.createRoom(this.player);
       callback({
          success: true,
