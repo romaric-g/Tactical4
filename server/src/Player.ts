@@ -28,7 +28,7 @@ export default class Player {
     }
 
     setName(name: string) : void {
-        this.name = name;
+        this.name = name.substring(0, 10);
     }
 
     setRoom(room: Room | null) : void {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions  } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import ReactGA from 'react-ga';
 import {bounceInDown, bounceInLeft, bounceInUp} from '../Animations/Animation';
 import { useHistory } from 'react-router';
 import Button from '../Components/Button';
@@ -12,6 +13,7 @@ import Models from '../types/Models';
 import socket from './../connection'
 
 const logo = require('../assets/logo.png');
+ReactGA.initialize('G-HC358Y7S2D');
 
 const Home = () => {
 
@@ -26,6 +28,7 @@ const Home = () => {
         query: "(max-device-width: 650px)"  
     });
     const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+    ReactGA.pageview("Home");
 
     const history = useHistory();
     const [Credit, setCredit] = useState(false)
