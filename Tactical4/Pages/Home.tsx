@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions  } from 'react-native';
+import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions, Platform  } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import ReactGA from 'react-ga';
 import Cookies from 'js-cookie'
@@ -25,10 +25,12 @@ const Home = () => {
         query: "(max-device-width: 1224px)"  
     });
     const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 650,
+        maxDeviceWidth: 450,
         // alternatively...
-        query: "(max-device-width: 650px)"  
+        query: "(max-device-width: 450px)"  
     });
+    
+    
     const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
     const history = useHistory();
@@ -36,6 +38,19 @@ const Home = () => {
 
     const [ name, setName ] = React.useState(Cookies.get("name") || "");
     const [ code, setCode ] = React.useState("");
+    
+    const [maxwidth, setmaxwidth] = useState(false);
+    React.useEffect(() => {
+        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+            window.addEventListener('resize', (event) => {
+                if(window.innerWidth >= 450){
+                    setmaxwidth(false);
+                }else{
+                    setmaxwidth(true);
+                }
+            });
+        }
+    },[]);
 
     const joinRoom = React.useCallback(() => {
         const joinRoomParams: Models.JoinRoomParams = {
@@ -78,7 +93,7 @@ const Home = () => {
     const dispCredit= () => {
         setCredit(!Credit)
     };
-    if (haveToRotate || isPortrait) {
+    if (maxwidth) {
         return (
             <View style={styles.containerportrait}>
                 <Image style={styles.turnyourdevice} source={require('./../assets/turndevice.gif')} />
@@ -215,7 +230,6 @@ const Home = () => {
                 </View>
             }
         </View>
-        // "MjczOTE0NzM2ODA1MTUwNzMx.XzBbuQ.5qp_vG4HsWgviy25Opt9MlVTQX0"
     )
 }
 

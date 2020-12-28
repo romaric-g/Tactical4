@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft, bounceIn, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn} from '../Animations/Animation';
 import Button from '../Components/Button';
-import PartyEndInner from '../Components/PartyEndInner';
 import socket from '../connection';
 import Models from '../types/Models';
 
@@ -16,7 +15,7 @@ interface Props {
     maxwidth?:boolean | undefined,
 }
 
-const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, maxwidth}: Props) => {
+const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, maxwidth}: Props) => {
 
     const startRoom = React.useCallback(() => {
         socket.emit("StartRoom", null, (res: Models.SocketResponse) => {
@@ -26,58 +25,68 @@ const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, maxwidth}: Props
 
     return (
         <View style={styles.Container}>
-            <Animatable.View animation={fadeIn400} style={styles.Bg}></Animatable.View>
-            {maxwidth ?
-            <View style={styles.pannelcomputer}>
-                <PartyEndInner
-                    Winner={Winner}
-                    Loser={Loser}
-                    WinnerScore={WinnerScore}
-                    LoserScore={LoserScore}
-                    Win={Win}
-                    maxwidth={maxwidth}
-                />
-            </View>
-            :
-            <View style={styles.pannel}>
-                <PartyEndInner
-                    Winner={Winner}
-                    Loser={Loser}
-                    WinnerScore={WinnerScore}
-                    LoserScore={LoserScore}
-                    Win={Win}
-                    maxwidth={maxwidth}
-                />
-            </View>
+            <Animatable.View animation={bounceInDown}>
+                <Image style={styles.Logo} source={require('./../assets/logo.png')} />
+            </Animatable.View>
+            {Win ?
+                <Animatable.View animation={bounceIn}>
+                    <Text style={styles.WinStatut}>GAGNÉ</Text>
+                </Animatable.View>
+                :
+                <Animatable.View animation={bounceIn}>
+                    <Text style={styles.WinStatut}>PERDU</Text>
+                </Animatable.View>
             }
+            
+            <Animatable.View animation={bounceInRight} style={styles.PlayerList}>
+                <View style={styles.PlayerInfos1}>
+                        <Text style={styles.PlayerName1}>1.{Winner}</Text>
+                    <View style={styles.PlayerScore1Container}>
+                        <Image style={styles.crown} source={require('./../assets/Crown.png')} />
+                        <Text style={styles.PlayerScore1}>{WinnerScore}pts</Text>
+                    </View>
+                </View>
+                <View style={styles.PlayerInfos2}>
+                    <Text style={styles.PlayerName2}>2.{Loser}</Text>
+                    <Text style={styles.PlayerScore2}>{LoserScore}pts</Text>
+                </View>
+            </Animatable.View>
+            <Animatable.View animation={bounceInUp} style={styles.Buttons}>
+                <View style={styles.Button1}>
+                    <Button
+                    color="noir"
+                    >
+                        Quitter
+                    </Button>
+                </View>
+                <View style={styles.Button2}>
+                    <Button onPress={startRoom} >Rejouer</Button>
+                </View>
+            </Animatable.View>
         </View>
     )
 }
 
 var styles = StyleSheet.create({
     Container: {
-        height: "100%",
-        width:"100%",
+        height:"100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         alignContent:"center",
         position: 'absolute',
-        top:0,
-        left:0,
-        backgroundColor:'rgba(4, 9, 27, 0.96)',
+        // backgroundColor:"green",
     },
     pannel:{
         height: "100%",
         width:"100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         position: 'absolute',
         left:0,
-        backgroundColor:'rgba(4, 9, 27, 0.96)',
         padding:30,
     },
     pannelcomputer:{
@@ -85,7 +94,7 @@ var styles = StyleSheet.create({
         width:"100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         position: 'absolute',
         left:0,
@@ -172,4 +181,4 @@ var styles = StyleSheet.create({
     }
 });
 
-export default PartyEnd;
+export default PartyEndInner;

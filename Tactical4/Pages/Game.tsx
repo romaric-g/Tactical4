@@ -23,9 +23,9 @@ const Game = () => {
         query: "(max-device-width: 1224px)"  
     });
     const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 650,
+        maxDeviceWidth: 450,
         // alternatively...
-        query: "(max-device-width: 650px)"  
+        query: "(max-device-width: 450px)"  
     });
     const [scalegrid, setscalegrid] = useState(false);
     const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
@@ -36,16 +36,31 @@ const Game = () => {
     const [Menu, setMenu] = useState(false)
     const [Back, setBack] = useState(false)
 
+    const [maxwidth, setmaxwidth] = useState(false);
     React.useEffect(() => {
-        window.addEventListener('resize', (event) => {
-            if(window.innerWidth >= 1050){
-                setscalegrid(true);
-                console.log("true")
-            }else{
-                setscalegrid(false);
-                console.log("false")
-            }
-        });
+        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+            window.addEventListener('resize', (event) => {
+                if(window.innerWidth >= 450){
+                    setmaxwidth(false);
+                }else{
+                    setmaxwidth(true);
+                }
+            });
+        }
+    },[]);
+
+    React.useEffect(() => {
+        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+            window.addEventListener('resize', (event) => {
+                if(window.innerWidth >= 1050){
+                    setscalegrid(true);
+                    console.log("true")
+                }else{
+                    setscalegrid(false);
+                    console.log("false")
+                }
+            });
+        }
         if(window.innerWidth >= 1050){
             setscalegrid(true);
         }
@@ -160,7 +175,7 @@ const Game = () => {
     if (!gameState) return (
         <ActivityIndicator />
     )
-    if (haveToRotate || isPortrait) {
+    if (maxwidth) {
         return (
             <View style={styles.containerportrait}>
                 <Image style={styles.turnyourdevice} source={require('./../assets/turndevice.gif')} />
@@ -261,6 +276,7 @@ const Game = () => {
                         WinnerScore= {winnerScore}
                         LoserScore= {loserScore}
                         Win ={win}
+                        maxwidth ={scalegrid}
                         />
                     </View>
                 }

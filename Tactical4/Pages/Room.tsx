@@ -21,11 +21,23 @@ const Room = () => {
         query: "(max-device-width: 1224px)"  
     });
     const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 650,
+        maxDeviceWidth: 450,
         // alternatively...
-        query: "(max-device-width: 650px)"  
+        query: "(max-device-width: 450px)"  
     });
-    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
+    const [maxwidth, setmaxwidth] = useState(false);
+    React.useEffect(() => {
+        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+            window.addEventListener('resize', (event) => {
+                if(window.innerWidth >= 450){
+                    setmaxwidth(false);
+                }else{
+                    setmaxwidth(true);
+                }
+            });
+        }
+    },[]);
 
     const history = useHistory();
     const [Back, setBack] = useState(false)
@@ -119,7 +131,7 @@ const Room = () => {
         }
         setcopyarlert(!copyarlert)
     };
-    if (haveToRotate || isPortrait) {
+    if (maxwidth) {
         return (
             <View style={styles.containerportrait}>
                 <Image style={styles.turnyourdevice} source={require('./../assets/turndevice.gif')} />
