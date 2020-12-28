@@ -1,6 +1,7 @@
 import { io } from 'socket.io-client';
 
-const socket = io('https://tactical4.herokuapp.com/');
+//https://tactical4.herokuapp.com/
+const socket = io('http://localhost:4000');
 
 socket.emit('play')
 socket.on('reverseplay', () => {

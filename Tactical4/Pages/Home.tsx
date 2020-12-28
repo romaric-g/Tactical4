@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions  } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import ReactGA from 'react-ga';
 import {bounceInDown, bounceInLeft, bounceInUp} from '../Animations/Animation';
 import { useHistory } from 'react-router';
 import Button from '../Components/Button';
@@ -12,6 +13,9 @@ import socket from './../connection'
 const logo = require('../assets/logo.png');
 
 const Home = () => {
+
+    ReactGA.initialize('G-HC358Y7S2D');
+    ReactGA.pageview("Home");
 
     const history = useHistory();
     const [Credit, setCredit] = useState(false)

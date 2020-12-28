@@ -58,14 +58,17 @@ export default class Room {
     }
 
     start() {
-        if (!this.isStart) {
+        console.log(this)
+        if (!this.isStart && this.players.length >= 2) {
             this.grid = new Grid(this);
             this.isStart = true;
             this.player1 = this.players[0];
             this.player2 = this.players[1];
+            this.win = undefined;
             this.dispatchEvent<Models.RoomStartEvent>("RoomStart", () => ({
                 code: this.code
             }))
+            this.dispatchNewGameState();
             return true;
         } else {
             return false;

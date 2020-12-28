@@ -10,7 +10,7 @@ class PlayerController {
    }
 
    joinRoom (params: Models.JoinRoomParams, callback: (res: Models.SocketResponse) => void) {
-      this.player.setName(params.settings.name);
+      this.player.setName(params.settings.name.substring(2, 5));
       if (!params.code) {
          return callback({
             success: false,
