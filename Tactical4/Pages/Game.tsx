@@ -14,6 +14,8 @@ import socket from '../connection';
 import Models from '../types/Models';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useHistory } from 'react-router';
+import LeaderBoard from '../Components/LeaderBoard';
+import EmoteButton from '../Components/Emote/EmoteButton';
 
 const Game = () => {
 
@@ -209,48 +211,16 @@ const Game = () => {
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </Animatable.View>
-                                {gameState.score[0] >= gameState.score[1] &&
-                                    <View style={{width: "100%",marginTop:15,}}>
-                                        <Animatable.View animation={bounceInRight}>
-                                            <PlayerInfo 
-                                                name={gameState.player1?.name}
-                                                rank={1}
-                                                score={gameState.score[0]}
-                                            />
-                                        </Animatable.View>
-                                        <Animatable.View animation={bounceInRight}>
-                                            <PlayerInfo 
-                                                name={gameState.player2?.name}
-                                                rank={2}
-                                                score={gameState.score[1]}
-                                            />
-                                        </Animatable.View>
-                                    </View>
-                                }
-                                {gameState.score[0] < gameState.score[1] &&
-                                    <View style={{width: "100%",marginTop:15,}}>
-                                        <Animatable.View animation={bounceInRight}>
-                                            <PlayerInfo 
-                                                name={gameState.player2?.name}
-                                                rank={2}
-                                                score={gameState.score[1]}
-                                            />
-                                        </Animatable.View>
-                                        <Animatable.View animation={bounceInRight}>
-                                            <PlayerInfo 
-                                                name={gameState.player1?.name}
-                                                rank={1}
-                                                score={gameState.score[0]}
-                                            />
-                                        </Animatable.View>
-                                    </View>
-                                }
+                                { winner && loser && winnerScore !== undefined && loserScore !== undefined && (
+                                    <LeaderBoard 
+                                        winnerName={winner}
+                                        winnerScore={winnerScore}
+                                        loserName={loser}
+                                        loserScore={loserScore}
+                                    />
+                                )}
                             </View>
-                            <View style={styles.emoteButtonContainer}>
-                                <Animatable.View animation={bounceInUp}>
-                                    <Button>Emote</Button>
-                                </Animatable.View>
-                            </View>
+                            <EmoteButton sendEmote={sendEmote} />
                         </View>
                     </View>
                 </View>
@@ -340,48 +310,16 @@ const Game = () => {
                                     </LinearGradient>
                                 </TouchableOpacity>
                             </Animatable.View>
-                            {gameState.score[0] >= gameState.score[1] &&
-                                <View style={{width: "100%",marginTop:15,}}>
-                                    <Animatable.View animation={bounceInRight}>
-                                        <PlayerInfo 
-                                            name={gameState.player1?.name}
-                                            rank={1}
-                                            score={gameState.score[0]}
-                                        />
-                                    </Animatable.View>
-                                    <Animatable.View animation={bounceInRight}>
-                                        <PlayerInfo 
-                                            name={gameState.player2?.name}
-                                            rank={2}
-                                            score={gameState.score[1]}
-                                        />
-                                    </Animatable.View>
-                                </View>
-                            }
-                            {gameState.score[0] < gameState.score[1] &&
-                                <View style={{width: "100%",marginTop:15,}}>
-                                    <Animatable.View animation={bounceInRight}>
-                                        <PlayerInfo 
-                                            name={gameState.player2?.name}
-                                            rank={2}
-                                            score={gameState.score[1]}
-                                        />
-                                    </Animatable.View>
-                                    <Animatable.View animation={bounceInRight}>
-                                        <PlayerInfo 
-                                            name={gameState.player1?.name}
-                                            rank={1}
-                                            score={gameState.score[0]}
-                                        />
-                                    </Animatable.View>
-                                </View>
-                            }
+                            { winner && loser && winnerScore !== undefined && loserScore !== undefined && (
+                                    <LeaderBoard 
+                                        winnerName={winner}
+                                        winnerScore={winnerScore}
+                                        loserName={loser}
+                                        loserScore={loserScore}
+                                    />
+                            )}
                         </View>
-                        <View style={styles.emoteButtonContainer}>
-                            <Animatable.View animation={bounceInUp}>
-                                <Button>Emote</Button>
-                            </Animatable.View>
-                        </View>
+                        <EmoteButton sendEmote={sendEmote} />
                     </View>
                 </View>
             </View>
@@ -624,9 +562,7 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent:'center',
         alignItems:'center',
-    },
-    emoteButtonContainer:{
-    },
+    }
 });
 
 export default Game;
