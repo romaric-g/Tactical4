@@ -61,7 +61,7 @@ export default class Grid {
     }
 
     findSequence(source: Position, playerNumber: number) {
-        const searchDirections = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[-1,1],[1,-1]];
+        const searchDirections = [[-1,1],[0,1],[1,1],[1,0]];
 
         const checkDirection = (source: Position, direction: number[]) : Position[] => {
             const sequence: Position[] = [];
@@ -81,7 +81,8 @@ export default class Grid {
 
         for (let index = 0; index < searchDirections.length; index++) {
             const searchDirection = searchDirections[index];
-            sequence[index] = [source, ...checkDirection(source, searchDirection)]
+            const searchDirectionOposite = [- searchDirection[0], - searchDirection[1]]
+            sequence[index] = [...checkDirection(source, searchDirectionOposite), source, ...checkDirection(source, searchDirection)]
         }
         
         return sequence;
