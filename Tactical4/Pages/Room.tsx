@@ -47,17 +47,14 @@ const Room = () => {
     const [ messages, setMessages ] = React.useState<ChatMessage[]>([])
 
     const pushMessage = React.useCallback((message: string) => {
-        console.log("PUSH");
-        console.log(messages)
-        const newMessages = [
-            ...messages, 
+        setMessages((lastMessages) => [
+            ...lastMessages, 
             {
                 message: message,
                 created: Date.now()
             }
-        ]
-        setMessages(newMessages);
-    }, [setMessages, messages])
+        ]);
+    }, [setMessages])
 
     const textRef = React.useRef<TextInput>(null)
 
@@ -74,24 +71,10 @@ const Room = () => {
         }
         
         socket.emit("GetRoomInfo", null, (res: Models.GetRoomInfoResponse) => {
-            console.log(res)
             if (res.success) {
                 setPlayersName(res.playersName)
             }
         })
-        
-        const roomPlayerListChange = (event: Models.RoomPlayerListChangeEvent) => {
-            setPlayersName(event.playersName);
-            console.log("room player")
-            switch(event.reason) {
-                case 'join':
-                    return pushMessage(`${ event.playerName } a rejoint la partie`);
-                case 'kick':
-                    return pushMessage(`${ event.playerName } a été exclu de la partie`);
-                case 'leave':
-                    return pushMessage(`${ event.playerName } a quitté la partie`)
-            }
-        }
 
         const roomStart = (event: Models.RoomStartEvent) => {
             history.push("/game")
@@ -106,7 +89,18 @@ const Room = () => {
         }
     }, []);
 
-    console.log(messages)
+            
+    const roomPlayerListChange = React.useCallback((event: Models.RoomPlayerListChangeEvent) => {
+        setPlayersName(event.playersName);
+        switch(event.reason) {
+            case 'join':
+                return pushMessage(`${ event.playerName } a rejoint la partie`);
+            case 'kick':
+                return pushMessage(`${ event.playerName } a été exclu de la partie`);
+            case 'leave':
+                return pushMessage(`${ event.playerName } a quitté la partie`)
+        }
+    }, [setPlayersName, pushMessage, messages])
 
     const canStart = React.useMemo(() => playersName.length == 2, [playersName])
 
