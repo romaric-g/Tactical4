@@ -39,6 +39,7 @@ export default class Grid {
 
         const sequances = this.findSequence(this.lastPlacement, playerNumber)
         const win = Object.values(sequances).some((sq) => sq.length >= 4)
+        const equality = this.points.every((point) => point.length >= 6)
 
         if (win) {
             const points: Position[] = Array.prototype.concat.apply(
@@ -52,6 +53,12 @@ export default class Grid {
                 scoreAdded: scoreAdded
             })
             this.room.addScore(playerNumber, scoreAdded);
+        } else if (equality) {
+            this.room.setWin({
+                winnerID: null,
+                points: null,
+                scoreAdded: 0
+            })
         } else {
             this.next()
         }

@@ -32,8 +32,8 @@ declare namespace Models {
   }
 
   interface WinState {
-    points: { x: number, y: number }[],
-    winnerID: string,
+    points: { x: number, y: number }[] | null,
+    winnerID: string | null,
     scoreAdded: number
   }
 

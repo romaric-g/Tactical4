@@ -131,7 +131,7 @@ const Game = () => {
 
     const winner = React.useMemo(() => {
         return gameState?.win?.winnerID === gameState?.player1?.id ? gameState?.player1?.name : gameState?.player2?.name
-     }, [gameState])
+    }, [gameState])
 
     const loser = React.useMemo(() => {
         return gameState?.win?.winnerID === gameState?.player1?.id ? gameState?.player2?.name : gameState?.player1?.name
