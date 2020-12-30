@@ -3,13 +3,14 @@ import { StyleSheet, View, Text } from 'react-native';
 import FadeInOut from './FadeInOut';
 
 interface Props {
-    messages: ChatMessage[]
+    messages: ChatMessage[],
+    couleur?: boolean,
 }
 
-export interface ChatMessage { message: string, created: number }
+export interface ChatMessage { message: string, created: number, couleur?: boolean, }
 
 
-const Chat = ({ messages } : Props ) => {
+const Chat = ({ messages, couleur } : Props ) => {
 
     const [ date, setDate ] = React.useState(Date.now());
 
@@ -32,7 +33,7 @@ const Chat = ({ messages } : Props ) => {
                 messages.map((message, index) => (
                     <FadeInOut key={index} isVisible={( date - message.created ) < 3000} >
                         <View style={styles.messageBox}>
-                            <Text style={styles.text}>{ message.message }</Text>
+                            <Text style={[styles.text, {color:couleur ? "red" : "white"}]}>{ message.message }</Text>
                         </View>
                     </FadeInOut>
                 ))
@@ -58,7 +59,6 @@ const styles = StyleSheet.create({
         textAlign: 'left'
     },
     text: {
-        color: "white",
         textAlign: 'left',
         fontFamily: 'Montserrat_400Regular',
     }
