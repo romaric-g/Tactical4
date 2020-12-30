@@ -10,7 +10,7 @@ const EmoteDisplay = forwardRef((props: any, ref: ForwardedRef<EmoteDisplayRef>)
 
     const [view, setView] = React.useState<JSX.Element | null>(null);
     const [emote, setEmote] = React.useState<string | null>(null);
-    const [rotate] = React.useState( new Animated.Value(0.6) )
+    const [rotate] = React.useState( new Animated.Value(0.7) )
     const [scale] = React.useState( new Animated.Value(0.9) )
     
     useImperativeHandle(ref, () => ({
@@ -42,13 +42,13 @@ const EmoteDisplay = forwardRef((props: any, ref: ForwardedRef<EmoteDisplayRef>)
             Animated.loop(
                 Animated.sequence([
                     Animated.timing(rotate, {
-                        toValue: 0.9,
+                        toValue: 0.8,
                         duration: 500,
                         useNativeDriver: false
                     }),
                     Animated.delay(150),
                     Animated.timing(rotate, {
-                        toValue: 0.6,
+                        toValue: 0.7,
                         duration: 500,
                         useNativeDriver: false
                     }),
@@ -82,10 +82,10 @@ const EmoteDisplay = forwardRef((props: any, ref: ForwardedRef<EmoteDisplayRef>)
     ), [rotate])
 
     return (
-        <View style={[styles.emote, { marginHorizontal: 15, transform: [ {rotate: '90deg'} ] }]}>
+        <View style={[styles.emote, { marginHorizontal: 15, transform: [ {rotate: '90deg'}, {translateX : 10} ] }]}>
             <Animated.View
                 pointerEvents={scale ? 'auto' : 'none'}
-                style={{ transform: [ { scale: scale }, {rotate: spin} ] }}
+                style={{ transform: [ { scale: scale }, {rotate: spin}, {translateX : -8}, {translateY : -8} ] }}
             >
                 {view}
             </Animated.View>

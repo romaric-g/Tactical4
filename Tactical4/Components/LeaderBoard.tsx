@@ -64,7 +64,7 @@ const LeaderBoard = (props : Props) => {
                     score={gameState?.score[winnerIndex] || 0}
                 />
             </Animatable.View>
-            <Animatable.View style={{ display: 'flex', flexDirection: 'row'}} animation={bounceInRight}>
+            <Animatable.View style={{ display: 'flex', flexDirection: 'row', marginTop: 10,}} animation={bounceInRight}>
                 <EmoteDisplay ref={winnerIndex === 1 ? refPlayer1 : refPlayer2} />
                 <PlayerInfo 
                     name={loserName}
