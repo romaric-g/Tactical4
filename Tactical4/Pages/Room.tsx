@@ -94,11 +94,11 @@ const Room = () => {
         setPlayersName(event.playersName);
         switch(event.reason) {
             case 'join':
-                return pushMessage(`${ event.playerName } a rejoint la partie`);
+                return pushMessage(`${ event.playerName } a rejoint la partie.`);
             case 'kick':
-                return pushMessage(`${ event.playerName } a été exclu de la partie`);
+                return pushMessage(`${ event.playerName } a été exclu de la partie.`);
             case 'leave':
-                return pushMessage(`${ event.playerName } a quitté la partie`)
+                return pushMessage(`${ event.playerName } a quitté la partie.`)
         }
     }, [setPlayersName, pushMessage, messages])
 
@@ -203,7 +203,7 @@ const Room = () => {
                                     </TouchableOpacity> 
                                     <View style={styles.secondePartieInput}>
                                         <View style={styles.traitSeparationInput}></View>
-                                        <TouchableOpacity onPress={copyCodeToCB}> 
+                                        <TouchableOpacity onPress={() => pushMessage(`Le code a été copié.`)}> 
                                             <Image
                                                 resizeMode="contain"
                                                 style={styles.shareIcon} 

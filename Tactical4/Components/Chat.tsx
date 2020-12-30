@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "white",
-        textAlign: 'left'
+        textAlign: 'left',
+        fontFamily: 'Montserrat_400Regular',
     }
 });
 

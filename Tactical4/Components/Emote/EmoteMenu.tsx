@@ -6,7 +6,7 @@ interface Props {
     setOpen: (open: boolean) => void
 }
 
-const emotes = [
+export const EMOTES = [
     'emote_happy.png',
     'emote_hangry.png',
     'emote_sad.png',
@@ -21,7 +21,7 @@ const EmoteMenu = (props: Props) => {
 
     return (
         <View style={styles.emoteMenu}>
-            { emotes.map((emote, index) => (
+            { EMOTES.map((emote, index) => (
                 <TouchableOpacity onPress={() => {
                     setOpen(false)
                     sendEmote(index)
