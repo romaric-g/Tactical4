@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { bounceInRight, bounceInLeft, bounceInRightYourTurn, fadeIn400YourTurn } from '../Animations/Animation';
 import '@expo/match-media'
 import { useMediaQuery } from "react-responsive";
-import Puissance4 from '../Components/Puissance4';
+import Puissance4 from '../Components/puissance4';
 import PartyEnd from '../Components/PartyEnd';
 import DispAlert from '../Components/DispAlert';
 import MenuInGame from '../Components/MenuInGame'
