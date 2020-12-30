@@ -40,7 +40,18 @@ const Game = () => {
     const [Menu, setMenu] = useState(false)
     const [Back, setBack] = useState(false)
 
+
+    /////////////////
     const [maxwidth, setmaxwidth] = useState(false);
+    /////////////////
+    const winState = React.useMemo(() => {
+        
+        // if(true){
+        //     setTimeout(() => {return false}, 1500);
+        // }else{
+        //     setTimeout(() => {return true}, 1500);
+        // }
+    }, [gameState?.win])
 
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
@@ -202,26 +213,28 @@ const Game = () => {
                             scalemuch={scalegrid}
                         />
                     </Animatable.View>
-                    <View style={styles.content}>
+                    <View style={[styles.content, {justifyContent:Platform.OS === 'android' && Platform.OS === 'ios' ? 'space-between' : 'flex-start'}]}>
                         <View style={{width: "100%"}}>
-                            <Animatable.View animation={bounceInLeft}>
-                                <TouchableOpacity onPress={dispMenu} style={styles.menuButton}>
-                                    <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
-                                        <View style={styles.menuBarContent}>
-                                            <View style={styles.menuBar1}></View>
-                                            <View style={styles.menuBar2}></View>
-                                            <View style={styles.menuBar1}></View>
-                                        </View>
-                                    </LinearGradient>
-                                </TouchableOpacity>
-                            </Animatable.View>
                             <LeaderBoard 
                                 gameState={gameState}
                             />
                         </View>
-                        <EmoteButton sendEmote={sendEmote} />
+                        <View style={styles.emoteButton}>
+                            <EmoteButton sendEmote={sendEmote} />
+                        </View>
                     </View>
                 </View>
+                <Animatable.View animation={bounceInLeft} style={styles.containermenu}>
+                    <TouchableOpacity onPress={dispMenu} style={styles.menuButton}>
+                        <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
+                            <View style={styles.menuBarContent}>
+                                <View style={styles.menuBar1}></View>
+                                <View style={styles.menuBar2}></View>
+                                <View style={styles.menuBar1}></View>
+                            </View>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </Animatable.View>
             </View>
             {playnow &&
                 <View pointerEvents='none' style={styles.yourTurn}>
@@ -237,7 +250,7 @@ const Game = () => {
                     </View>
                 </View>
             }
-            {gameState.win &&
+            {gameState?.win &&
                 <View style={styles.partend}>
                     <PartyEnd
                     Winner={winner}
@@ -347,7 +360,19 @@ const styles = StyleSheet.create({
     menuButton: {
         marginLeft:'auto',
         marginRight:0,
+        
     },
+    emoteButton: {
+        marginRight:'auto',
+        marginTop:25,
+        marginLeft:33,
+    },
+    containermenu: {
+        position:'absolute',
+        top:30,
+        right:30,
+    },
+    
     menuBar1:{
         width: 25,
         height: 2.5,
@@ -377,10 +402,9 @@ const styles = StyleSheet.create({
     content: {
         height: "100%",
         flex: 0.5,
-        paddingLeft: 40,
+        // paddingLeft: 40,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
         alignItems: "center"
     },
     image: {

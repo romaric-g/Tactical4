@@ -26,9 +26,9 @@ const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality
     }, [])
 
     return (
-        <View style={[styles.Container]}>
-            <Animatable.View animation={fadeIn400} style={styles.Bg}></Animatable.View>
-            <View style={[styles.pannelcomputer, {height:mobile ? '100%' : '60%'}]}>
+        <Animatable.View delay={4000} animation={fadeIn400} style={[styles.Container]}>
+            <Animatable.View delay={4000} animation={fadeIn400} style={styles.Bg}></Animatable.View>
+            <Animatable.View delay={4000} animation={fadeIn400} style={[styles.pannel, {height:mobile ? '100%' : '60%'}]}>
                 <PartyEndInner
                     Winner={Winner}
                     Loser={Loser}
@@ -38,8 +38,8 @@ const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality
                     mobile={mobile}
                     equality={equality}
                 />
-            </View>
-        </View>
+            </Animatable.View>
+        </Animatable.View>
     )
 }
 
@@ -58,18 +58,6 @@ var styles = StyleSheet.create({
         backgroundColor:'rgba(4, 9, 27, 0.96)',
     },
     pannel:{
-        height: "100%",
-        width:"100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        position: 'absolute',
-        left:0,
-        backgroundColor:'rgba(4, 9, 27, 0.96)',
-        padding:30,
-    },
-    pannelcomputer:{
         height: "60%",
         width:"100%",
         display: "flex",

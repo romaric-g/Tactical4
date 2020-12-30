@@ -85,7 +85,7 @@ const EmoteDisplay = forwardRef((props: any, ref: ForwardedRef<EmoteDisplayRef>)
         <View style={[styles.emote, { marginHorizontal: 15, transform: [ {rotate: '90deg'}, {translateX : 10} ] }]}>
             <Animated.View
                 pointerEvents={scale ? 'auto' : 'none'}
-                style={{ transform: [ { scale: scale }, {rotate: spin}, {translateX : -8}, {translateY : -8} ] }}
+                style={{ transform: [ { scale: scale }, {rotate: spin}, {translateX : -8}, {translateY : -12} ] }}
             >
                 {view}
             </Animated.View>

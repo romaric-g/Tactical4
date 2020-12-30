@@ -26,27 +26,27 @@ const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equ
 
     return (
         <View style={[styles.Container, {paddingVertical:mobile ? 30 : 0}]} >
-            <Animatable.View animation={bounceInDown}>
+            <Animatable.View delay={4000} animation={bounceInDown}>
                 <Image style={styles.Logo} source={require('./../assets/logo.png')} />
             </Animatable.View>
             {
                 equality ?
-                    (<Animatable.View animation={bounceIn}>
+                    (<Animatable.View delay={4000} animation={bounceIn}>
                             <Text style={styles.WinStatut}>ÉGALITÉ</Text>
                     </Animatable.View>)
                 :
                     (Win ?
-                        <Animatable.View animation={bounceIn}>
+                        <Animatable.View delay={4000} animation={bounceIn}>
                             <Text style={styles.WinStatut}>GAGNÉ</Text>
                         </Animatable.View>
                         :
-                        <Animatable.View animation={bounceIn}>
+                        <Animatable.View delay={4000} animation={bounceIn}>
                             <Text style={styles.WinStatut}>PERDU</Text>
                         </Animatable.View>
                     )
                 
             }
-            <Animatable.View animation={bounceInRight} style={styles.PlayerList}>
+            <Animatable.View delay={4000} animation={bounceInRight} style={styles.PlayerList}>
                 <View style={styles.PlayerInfos1}>
                         <Text style={[styles.PlayerName, {fontSize:equality ? 30 : 36}]}>1.{Winner}</Text>
                     <View style={styles.PlayerScore1Container}>
@@ -61,7 +61,7 @@ const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equ
                     <Text style={[styles.PlayerScore, {fontSize:equality ? 16 : 14}]}>{LoserScore}pts</Text>
                 </View>
             </Animatable.View>
-            <Animatable.View animation={bounceInUp} style={styles.Buttons}>
+            <Animatable.View delay={4000} animation={bounceInUp} style={styles.Buttons}>
                 <View style={styles.Button1}>
                     <Button
                     color="noir"
@@ -88,28 +88,6 @@ var styles = StyleSheet.create({
         position: 'absolute',
         // backgroundColor:"green",
     },
-    pannel:{
-        height: "100%",
-        width:"100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        position: 'absolute',
-        left:0,
-        padding:30,
-    },
-    pannelcomputer:{
-        height: "60%",
-        width:"100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        position: 'absolute',
-        left:0,
-        backgroundColor:'rgba(4, 9, 27, 0.96)',
-    },
     crown:{
         width: 20,
         height: 13,
@@ -118,16 +96,6 @@ var styles = StyleSheet.create({
         display:'flex',
         width: 144,
         height: 48,
-        resizeMode:'contain',
-    },
-    Bg: {
-        position: 'absolute',
-        top: 0,
-        left:0,
-        width: '100%',
-        height: '100%',
-        backgroundColor:'rgba(4, 9, 27, 0.96)',
-        opacity:0.96,
         resizeMode:'contain',
     },
     WinStatut: {

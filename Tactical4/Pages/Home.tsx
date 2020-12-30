@@ -74,7 +74,7 @@ const Home = () => {
         } else {
             console.log("ERROR")
             console.log(res)
-            shakeAnimatable.current.shake(800);
+            shakeAnimatable.current.shake(150);
         }
     }, [code])
 

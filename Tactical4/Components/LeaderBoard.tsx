@@ -32,6 +32,14 @@ const LeaderBoard = (props : Props) => {
         return winnerIndex === 0 ? gameState?.player2?.name : gameState?.player1?.name;
     }, [gameState])
 
+    const winnercolor = React.useMemo(() => {
+        return winnerIndex === 0 ? true : false
+    }, [gameState])
+
+    const losercolor = React.useMemo(() => {
+        return winnerIndex === 0 ? false : true
+    }, [gameState])
+
     const refPlayer1 = React.useRef<EmoteDisplayRef>(null)
     const refPlayer2 = React.useRef<EmoteDisplayRef>(null)
 
@@ -55,21 +63,24 @@ const LeaderBoard = (props : Props) => {
     }, [])
 
     return (
-        <View style={{width: "100%",marginTop:15,}}>
+        <View style={{width: "100%",marginTop:65,transform:[{translateX:-30}]}}>
+        {/* <View style={{width: "100%",marginTop:15,transform:[{translateX:-30}]}}> */}
             <Animatable.View style={{ display: 'flex', flexDirection: 'row'}} animation={bounceInRight}>
                 <EmoteDisplay ref={winnerIndex === 0 ? refPlayer1 : refPlayer2} />
                 <PlayerInfo 
                     name={winnerName}
                     rank={1}
                     score={gameState?.score[winnerIndex] || 0}
+                    color={winnercolor}
                 />
             </Animatable.View>
-            <Animatable.View style={{ display: 'flex', flexDirection: 'row', marginTop: 10,}} animation={bounceInRight}>
+            <Animatable.View style={{ display: 'flex', flexDirection: 'row', marginTop: 10}} animation={bounceInRight}>
                 <EmoteDisplay ref={winnerIndex === 1 ? refPlayer1 : refPlayer2} />
                 <PlayerInfo 
                     name={loserName}
                     rank={2}
                     score={gameState?.score[( winnerIndex === 0 ? 1 : 0 )] || 0}
+                    color={losercolor}
                 />
             </Animatable.View>
         </View>
