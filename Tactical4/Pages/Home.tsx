@@ -3,23 +3,38 @@ import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions,
 import * as Animatable from 'react-native-animatable';
 import ReactGA from 'react-ga';
 import Cookies from 'js-cookie'
-import {bounceInDown, bounceInLeft, bounceInUp} from '../Animations/Animation';
+import {bounceInDown, bounceInLeft, bounceInRight, bounceInUp} from '../Animations/Animation';
 import { useHistory } from 'react-router';
 import Button from '../Components/Button';
 import '@expo/match-media'
 import { useMediaQuery } from "react-responsive";
 import DispAlert from '../Components/DispAlert';
 import Credits from '../Components/Credits'
+import RulesCont from '../Components/Rules'
 import Models from '../types/Models';
 import socket from './../connection'
 import EmoteButton from '../Components/Emote/EmoteButton';
 import EmoteDisplay from '../Components/Emote/EmoteDisplay';
+import Chat, { ChatMessage } from '../Components/Chat';
+
 
 const logo = require('../assets/logo.png');
 ReactGA.initialize('G-HC358Y7S2D');
 ReactGA.pageview("Home");
 
 const Home = () => {
+
+    const [ messages, setMessages ] = React.useState<ChatMessage[]>([])
+
+    const pushMessage = React.useCallback((message: string) => {
+        setMessages((lastMessages) => [
+            ...lastMessages, 
+            {
+                message: message,
+                created: Date.now()
+            }
+        ]);
+    }, [setMessages])
 
     const isTabletOrMobileDevice = useMediaQuery({    
         maxDeviceWidth: 1224,
@@ -37,6 +52,7 @@ const Home = () => {
 
     const history = useHistory();
     const [Credit, setCredit] = useState(false)
+    const [Rules, setRules] = useState(false)
 
     const [ name, setName ] = React.useState(Cookies.get("name") || "");
     const [ code, setCode ] = React.useState("");
@@ -99,6 +115,9 @@ const Home = () => {
     const dispCredit= () => {
         setCredit(!Credit)
     };
+    const dispRules= () => {
+        setRules(!Rules)
+    };
     if (maxwidth) {
         return (
             <View style={styles.containerportrait}>
@@ -112,6 +131,11 @@ const Home = () => {
             <Animatable.View animation={bounceInLeft} style={styles.creditContainer}>
                 <TouchableOpacity onPress={dispCredit}>
                     <Text style={styles.credit}>Crédits</Text>
+                </TouchableOpacity>
+            </Animatable.View>
+            <Animatable.View animation={bounceInRight} style={styles.rulesContainer}>
+                <TouchableOpacity onPress={dispRules}>
+                    <Text style={styles.rules}>Règles</Text>
                 </TouchableOpacity>
             </Animatable.View>
             <View style={[styles.addpadding, {height:isTabletOrMobileDevice? '100%' : '60%'}]}>
@@ -169,6 +193,13 @@ const Home = () => {
                 <View style={styles.partend}>
                     <Credits
                     Close={dispCredit}
+                    />
+                </View>
+            }
+            {Rules &&
+                <View style={styles.partend}>
+                    <RulesCont
+                    Close={dispRules}
                     />
                 </View>
             }
@@ -250,6 +281,23 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         marginBottom:20,
         marginRight:30,
+    },
+    rulesContainer: {
+        position: 'absolute',
+        flex:1,
+        left:30,
+        width: '100%',
+        height: '100%',
+        // backgroundColor:'red',
+        justifyContent:'flex-end',
+        alignItems:'flex-start',
+        alignSelf:'center',
+    },
+    rules:{
+        fontSize: 24,
+        fontFamily: 'SuezOne_400Regular',
+        color: "#FFFFFF",
+        marginBottom:20,
     },
     name: {
         height: 50,

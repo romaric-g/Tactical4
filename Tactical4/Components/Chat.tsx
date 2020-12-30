@@ -43,6 +43,7 @@ const Chat = ({ messages } : Props ) => {
 
 const styles = StyleSheet.create({
     container: {
+        zIndex:2,
         position: 'absolute',
         left: 0,
         bottom: 20,
