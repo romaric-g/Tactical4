@@ -46,7 +46,7 @@ const FadeInOut = ({ isVisible, children }: Props) => {
         >
             {view}
         </Animated.View>
-      );
+    );
 }
 
 export default FadeInOut;

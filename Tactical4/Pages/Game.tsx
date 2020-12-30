@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useHistory } from 'react-router';
 import LeaderBoard from '../Components/LeaderBoard';
 import EmoteButton from '../Components/Emote/EmoteButton';
+import EmoteDisplay, { EmoteDisplayRef } from '../Components/Emote/EmoteDisplay';
 
 const Game = () => {
 
@@ -211,14 +212,9 @@ const Game = () => {
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </Animatable.View>
-                                { winner && loser && winnerScore !== undefined && loserScore !== undefined && (
-                                    <LeaderBoard 
-                                        winnerName={winner}
-                                        winnerScore={winnerScore}
-                                        loserName={loser}
-                                        loserScore={loserScore}
-                                    />
-                                )}
+                                <LeaderBoard 
+                                    gameState={gameState}
+                                />
                             </View>
                             <EmoteButton sendEmote={sendEmote} />
                         </View>
@@ -310,14 +306,9 @@ const Game = () => {
                                     </LinearGradient>
                                 </TouchableOpacity>
                             </Animatable.View>
-                            { winner && loser && winnerScore !== undefined && loserScore !== undefined && (
-                                    <LeaderBoard 
-                                        winnerName={winner}
-                                        winnerScore={winnerScore}
-                                        loserName={loser}
-                                        loserScore={loserScore}
-                                    />
-                            )}
+                            <LeaderBoard 
+                                gameState={gameState}
+                            />
                         </View>
                         <EmoteButton sendEmote={sendEmote} />
                     </View>

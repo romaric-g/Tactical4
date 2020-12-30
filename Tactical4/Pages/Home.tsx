@@ -13,6 +13,7 @@ import Credits from '../Components/Credits'
 import Models from '../types/Models';
 import socket from './../connection'
 import EmoteButton from '../Components/Emote/EmoteButton';
+import EmoteDisplay from '../Components/Emote/EmoteDisplay';
 
 const logo = require('../assets/logo.png');
 ReactGA.initialize('G-HC358Y7S2D');
