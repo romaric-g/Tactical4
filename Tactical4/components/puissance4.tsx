@@ -1,8 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Modal  } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {bounceInDown, bounceInDownJeton, bounceInUp, bounceInRight, bounceInLeft, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn, minify} from '../Animations/Animation';
+import { bounceInDownJeton } from '../Animations/Animation';
 import socket from '../connection';
 import Models from '../types/Models';
 
@@ -65,22 +64,12 @@ export default function Puissance4(props: Props) {
     return (
       <View style={[styles.container,{transform: [{ scale: 1.5 }]}]}>
         {createCircle()}
-        {/* <Image
-            resizeMode="contain"
-            style={styles.grid} 
-            source={require('../assets/svggrid.png')}
-        /> */}
       </View>
     );
   }
   return (
     <View style={[styles.container,{transform: [{ scale: 1 }]}]}>
       {createCircle()}
-      {/* <Image
-          resizeMode="contain"
-          style={styles.grid} 
-          source={require('../assets/svggrid.png')}
-      /> */}
     </View>
   );
 }

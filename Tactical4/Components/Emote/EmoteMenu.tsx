@@ -7,10 +7,10 @@ interface Props {
 }
 
 export const EMOTES = [
-    'emote_happy.png',
-    'emote_hangry.png',
-    'emote_sad.png',
-    'emote_neutral.png'
+    require('./../../assets/emote_happy.png'),
+    require('./../../assets/emote_hangry.png'),
+    require('./../../assets/emote_sad.png'),
+    require('./../../assets/emote_neutral.png')
 ]
 
 const EmoteMenu = (props: Props) => {
@@ -27,7 +27,7 @@ const EmoteMenu = (props: Props) => {
                     sendEmote(index)
                 }} key={index}>
                     <View> 
-                        <Image style={styles.emote} source={require('./../../assets/' + emote)} />
+                        <Image style={styles.emote} source={emote} />
                     </View>
                 </TouchableOpacity>
             ))}

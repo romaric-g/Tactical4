@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, ActivityIndicator, TouchableOpacity, BackHandler, Text, Platform } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn, minify} from '../Animations/Animation';
-import Button from '../Components/Button';
-import PlayerInfo from '../Components/PlayerInfo';
+import { bounceInRight, bounceInLeft, bounceInRightYourTurn, fadeIn400YourTurn } from '../Animations/Animation';
 import '@expo/match-media'
 import { useMediaQuery } from "react-responsive";
 import Puissance4 from '../Components/Puissance4';
@@ -213,7 +211,7 @@ const Game = () => {
                             scalemuch={scalegrid}
                         />
                     </Animatable.View>
-                    <View style={[styles.content, {justifyContent:Platform.OS === 'android' && Platform.OS === 'ios' ? 'space-between' : 'flex-start'}]}>
+                    <View style={[styles.content, {justifyContent: Platform.OS === 'android' || Platform.OS === 'ios' ? 'space-between' : 'flex-start'}]}>
                         <View style={{width: "100%"}}>
                             <LeaderBoard 
                                 gameState={gameState}

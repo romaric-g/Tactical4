@@ -9,7 +9,7 @@ export interface EmoteDisplayRef {
 const EmoteDisplay = forwardRef((props: any, ref: ForwardedRef<EmoteDisplayRef>) => {
 
     const [view, setView] = React.useState<JSX.Element | null>(null);
-    const [emote, setEmote] = React.useState<string | null>(null);
+    const [emote, setEmote] = React.useState<any>(null);
     const [rotate] = React.useState( new Animated.Value(0.7) )
     const [scale] = React.useState( new Animated.Value(0.9) )
     
@@ -69,7 +69,7 @@ const EmoteDisplay = forwardRef((props: any, ref: ForwardedRef<EmoteDisplayRef>)
     }, [emote])
 
     const insertView = () => setView(
-        <Image style={styles.emote} source={require('./../../assets/' + emote)} />
+        <Image style={styles.emote} source={emote} />
     );
 
     const removeView = () => setView(null);

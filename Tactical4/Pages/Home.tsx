@@ -90,7 +90,7 @@ const Home = () => {
         } else {
             console.log("ERROR")
             console.log(res)
-            shakeAnimatable.current.shake(150);
+            shakeAnimatable.current.shake(600);
         }
     }, [code])
 
