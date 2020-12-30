@@ -1,10 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Linking, Platform } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn} from '../Animations/Animation';
+import { bounceInUp, fadeIn400 } from '../Animations/Animation';
 import Button from './Button';
-import socket from '../connection';
-import Models from '../types/Models';
 
 interface Props {
     Close?: any,
@@ -22,11 +20,15 @@ const Rules = ({Close}: Props) => {
                 <View style={styles.MessageContainer}>
                     <Text style={styles.Titre1}>Règles du jeu</Text>
                     <Text style={styles.Titre2}>Pour jouer au Tactical 4, il vous faut :</Text>
-                    <Text style={styles.Paragraphe}>- Être 2 joueurs.<br/>- Être Connecté sur l'application web, android ou ios.<br/>- S'être partagé le code partie et s'y être connecté.</Text>
+                    <Text style={styles.Paragraphe}>- Être 2 joueurs. - Être Connecté sur l'application web, android ou ios. - S'être partagé le code partie et s'y être connecté.</Text>
                     <Text style={styles.Titre2}>Commencer une partie de Tactical 4 :</Text>
-                    <Text style={styles.Paragraphe}>Pour commencer une partie de Tactical 4, l'application désigne le premier joueur. Celui-­ci met un de ses jetons de couleur dans l’une des colonnes de son choix. Le jeton tombe alors en bas de la colonne.<br/>Le deuxième joueur insère à son tour son jeton, de l’autre couleur dans la colonne de son choix. Et ainsi de suite jusqu’à obtenir une rangée de 4 jetons de même couleur.</Text>
+                    <Text style={styles.Paragraphe}>Pour commencer une partie de Tactical 4, l'application désigne le premier joueur.</Text>
+                    <Text style={styles.Paragraphe}>Celui-­ci met un de ses jetons de couleur dans l'une des colonnes de son choix. Le jeton tombe alors en bas de la colonne.</Text>
+                    <Text style={styles.Paragraphe}>Le deuxième joueur insère à son tour son jeton, de l'autre couleur dans la colonne de son choix.</Text>
+                    <Text style={styles.Paragraphe}>Et ainsi de suite jusqu'à obtenir une rangée de 4 jetons de même couleur.</Text>
                     <Text style={styles.Titre2}>Comment gagner une partie de Tactical 4 :</Text>
-                    <Text style={styles.Paragraphe}>Pour gagner une partie de Tactical 4, il suffit d’être le premier à aligner 4 jetons de sa couleur horizontalement, verticalement et diagonalement.<br/>Si lors d’une partie, tous les jetons sont joués sans qu’il y est d’alignement de jetons, la partie est déclaré nulle.</Text>
+                    <Text style={styles.Paragraphe}>Pour gagner une partie de Tactical 4, il suffit d'être le premier à aligner 4 jetons de sa couleur horizontalement, verticalement et diagonalement.</Text>
+                    <Text style={styles.Paragraphe}>Si lors d'une partie, tous les jetons sont joués sans qu'il y est d'alignement de jetons, la partie est déclaré nulle.</Text>
                 </View>
             </Animatable.View>
         </View>
@@ -83,7 +85,7 @@ var styles = StyleSheet.create({
         // backgroundColor:'#131829',
         padding:30,
         borderRadius:14,
-        overflowY:'scroll',
+        overflow: 'scroll',
         minHeight:'100%',
         height:'100%'
     },
