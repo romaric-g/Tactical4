@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft, bounceIn, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn} from '../Animations/Animation';
 import Button from '../Components/Button';
-import PartyEndInner from '../Components/PartyEndInner';
+import PartyEndInner from './PartyEndInner';
 import socket from '../connection';
 import Models from '../types/Models';
 
@@ -13,10 +13,11 @@ interface Props {
     WinnerScore?: number | undefined,
     LoserScore?: number | undefined,
     Win?:boolean | undefined,
-    maxwidth?:boolean | undefined,
+    mobile?:boolean | undefined,
+    equality?:boolean | undefined,
 }
 
-const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, maxwidth}: Props) => {
+const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality}: Props) => {
 
     const startRoom = React.useCallback(() => {
         socket.emit("StartRoom", null, (res: Models.SocketResponse) => {
@@ -25,31 +26,19 @@ const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, maxwidth}: Props
     }, [])
 
     return (
-        <View style={styles.Container}>
+        <View style={[styles.Container]}>
             <Animatable.View animation={fadeIn400} style={styles.Bg}></Animatable.View>
-            {maxwidth ?
-            <View style={styles.pannelcomputer}>
+            <View style={[styles.pannelcomputer, {height:mobile ? '100%' : '60%'}]}>
                 <PartyEndInner
                     Winner={Winner}
                     Loser={Loser}
                     WinnerScore={WinnerScore}
                     LoserScore={LoserScore}
                     Win={Win}
-                    maxwidth={maxwidth}
+                    mobile={mobile}
+                    equality={equality}
                 />
             </View>
-            :
-            <View style={styles.pannel}>
-                <PartyEndInner
-                    Winner={Winner}
-                    Loser={Loser}
-                    WinnerScore={WinnerScore}
-                    LoserScore={LoserScore}
-                    Win={Win}
-                    maxwidth={maxwidth}
-                />
-            </View>
-            }
         </View>
     )
 }

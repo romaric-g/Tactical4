@@ -29,6 +29,7 @@ const Game = () => {
         // alternatively...
         query: "(max-device-width: 450px)"  
     });
+    const [mobile, setmobile] = useState(true);
     const [scalegrid, setscalegrid] = useState(false);
     const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
@@ -39,27 +40,24 @@ const Game = () => {
     const [Back, setBack] = useState(false)
 
     const [maxwidth, setmaxwidth] = useState(false);
-    React.useEffect(() => {
-        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
-            window.addEventListener('resize', (event) => {
-                if(window.innerWidth >= 450){
-                    setmaxwidth(false);
-                }else{
-                    setmaxwidth(true);
-                }
-            });
-        }
-    },[]);
 
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
             window.addEventListener('resize', (event) => {
                 if(window.innerWidth >= 1050){
                     setscalegrid(true);
-                    console.log("true")
                 }else{
                     setscalegrid(false);
-                    console.log("false")
+                }
+                if(window.innerWidth >= 450){
+                    setmaxwidth(false);
+                }else{
+                    setmaxwidth(true);
+                }
+                if(window.innerWidth >= 750){
+                    setmobile(false);
+                }else{
+                    setmobile(true);
                 }
             });
         }
@@ -145,6 +143,10 @@ const Game = () => {
         return gameState?.win?.winnerID === gameState?.player1?.id ? gameState?.score[1] : gameState?.score[0]
     }, [gameState])
 
+    const isEquality = React.useMemo(() => {
+        return gameState?.win?.winnerID === null
+    }, [gameState])
+
     const dispMenu = () => {
         setMenu(!Menu)
     };
@@ -185,108 +187,10 @@ const Game = () => {
             </View>
         )
     }
-    if (isTabletOrMobileDevice) {
-        return (
-            <View style={styles.containerfirst}>
-                <View style={styles.container}>
-                    <View style={styles.addpadding}>
-                        <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
-                            <Puissance4
-                                key={1000}
-                                grid={gameState.grid} 
-                                canPlay={canPlay}
-                                currentPlayer={gameState.currentPlayer}
-                            />
-                        </Animatable.View>
-                        <View style={styles.content}>
-                            <View style={{width: "100%"}}>
-                                <Animatable.View animation={bounceInLeft}>
-                                    <TouchableOpacity onPress={dispMenu} style={styles.menuButton}>
-                                        <LinearGradient style={styles.linearGradient} colors={['#72FFBB', '#008A48']} >
-                                            <View style={styles.menuBarContent}>
-                                                <View style={styles.menuBar1}></View>
-                                                <View style={styles.menuBar2}></View>
-                                                <View style={styles.menuBar1}></View>
-                                            </View>
-                                        </LinearGradient>
-                                    </TouchableOpacity>
-                                </Animatable.View>
-                                { winner && loser && winnerScore !== undefined && loserScore !== undefined && (
-                                    <LeaderBoard 
-                                        winnerName={winner}
-                                        winnerScore={winnerScore}
-                                        loserName={loser}
-                                        loserScore={loserScore}
-                                    />
-                                )}
-                            </View>
-                            <EmoteButton sendEmote={sendEmote} />
-                        </View>
-                    </View>
-                </View>
-                {playnow &&
-                    <View pointerEvents='none' style={styles.yourTurn}>
-                        <Animatable.View animation={fadeIn400YourTurn} duration={3500} style={styles.yourTurnBg}>
-                        </Animatable.View>
-                        <View style={styles.yourTurnContent}>
-                            <Animatable.View animation={bounceInRightYourTurn} duration={3000}>
-                                <Image style={styles.you} source={require('./../assets/you.png')} />
-                            </Animatable.View>
-                            <Animatable.View animation={bounceInRightYourTurn} duration={3500}>
-                                <Text style={styles.yourTurnText}>À TOI DE JOUER !</Text>
-                            </Animatable.View>
-                        </View>
-                    </View>
-                }
-                {gameState.win &&
-                    <View style={styles.partend}>
-                        <PartyEnd
-                        Winner={winner}
-                        Loser={loser}
-                        WinnerScore= {winnerScore}
-                        LoserScore= {loserScore}
-                        Win ={win}
-                        maxwidth ={scalegrid}
-                        />
-                    </View>
-                }
-                {Menu &&
-                    <View style={styles.partend}>
-                        <MenuInGame
-                            menuProp={Menu}
-                            quitRoom={quitRoom}
-                            dispMenu={dispMenu}
-                        />
-                    </View>
-                }
-                {!gameState.win && !Menu && Back &&
-                    <View style={styles.partend}>
-                        <DispAlert
-                            message={"Quitter la partie en cours?"}
-                            type="requestHome"
-                            quitRoom={quitRoom}
-                            dispBack={dispBack}
-                        />
-                    </View>
-                }
-                {gameState.leave &&
-                    <View style={styles.partend}>
-                        <DispAlert
-                            message={"Votre adversaire a quitter la partie"}
-                            type="forceHome"
-                            quitRoom={quitRoom}
-                            dispBack={dispBack}
-                        />
-                    </View>
-                }
-            </View>
-        )
-    }
-    // <Animatable.View key={1} animation={bounceInRight} style={[styles.contentpuissance4, {transform: [{ translateY: -45 }]} ]}></Animatable.View>
     return (
         <View style={styles.containerfirst}>
-            <View style={styles.containercomputer}>
-                <View style={styles.addpaddingcomputer}>
+            <View style={[styles.container, {justifyContent:isTabletOrMobileDevice ? "space-between" : 'center'}]}>
+                <View style={[styles.addpadding, {paddingVertical:isTabletOrMobileDevice ? 30 : 150}]}>
                     
                     <Animatable.View key={1} animation={bounceInRight} style={styles.contentpuissance4}>
                         <Puissance4
@@ -345,6 +249,7 @@ const Game = () => {
                     WinnerScore= {winnerScore}
                     LoserScore= {loserScore}
                     Win ={win}
+                    equality={isEquality}
                     />
                 </View>
             }
@@ -382,24 +287,13 @@ const Game = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "100%",
-        backgroundColor: "#04091B",
-        width:'100%',
-        color: "white",
-        flex: 1,
-        resizeMode: "cover",
-    },
     containerportrait:{
         height: "100%",
         width:"100%",
         flex: 1,
         alignItems: "center",
         justifyContent:"center",
+        overflow:'hidden',
     },
     textportrait:{
         color:"white",
@@ -413,41 +307,7 @@ const styles = StyleSheet.create({
         height:70,
         marginBottom:30,
     },
-    containercomputer: {
-        height: "100%",
-        width:'100%',
-        color: "white",
-        // padding: 30,
-        flex: 1,
-        resizeMode: "cover",
-        alignItems: "center",
-        justifyContent:'center',
-        // backgroundColor:'green'
-    },
-    addpaddingcomputer:{
-        paddingVertical: 150,
-        paddingHorizontal: 30,
-        display:'flex',
-        flexDirection:'row',
-        height:'100%',
-        width:'100%',
-        alignItems: "center"
-    },
-    containerfirst: {
-        height: "100%",
-        width:'100%',
-        flex: 1,
-        resizeMode: "cover",
-        alignItems: "center",
-    },
-    contentpuissance4:{
-        flex:1,
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'center',
-    },
-    addpadding:{
-        padding: 30,
+    container: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -458,6 +318,35 @@ const styles = StyleSheet.create({
         color: "white",
         flex: 1,
         resizeMode: "cover",
+        overflow:'hidden',
+    },
+    addpadding:{
+        paddingVertical: 30,
+        paddingHorizontal: 30,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: "100%",
+        backgroundColor: "#04091B",
+        width:'100%',
+        color: "white",
+        flex: 1,
+        resizeMode: "cover",
+    },
+    containerfirst: {
+        height: "100%",
+        width:'100%',
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
+        overflow:'hidden',
+    },
+    contentpuissance4:{
+        flex:1,
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
     },
     menuButton: {
         marginLeft:'auto',

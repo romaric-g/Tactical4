@@ -10,6 +10,7 @@ import Home from './Pages/Home';
 import Room from './Pages/Room';
 import Game from './Pages/Game';
 import socket from './connection';
+import PartyEndInner from './Components/PartyEndInner'
 
 const App = () => {
   let [fontsLoaded] = useFonts({
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
   },
   bgapp: {
     backgroundColor:'rgba(4, 9, 27, 1)',
+    overflow:'hidden',
   },
   navItem: {
     flex: 1,

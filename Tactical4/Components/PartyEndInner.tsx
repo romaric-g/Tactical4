@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft, bounceIn, fadeIn400, bounceInRightYourTurn, fadeIn400YourTurn} from '../Animations/Animation';
-import Button from '../Components/Button';
+import Button from './Button';
 import socket from '../connection';
 import Models from '../types/Models';
 
@@ -12,10 +12,11 @@ interface Props {
     WinnerScore?: number | undefined,
     LoserScore?: number | undefined,
     Win?:boolean | undefined,
-    maxwidth?:boolean | undefined,
+    mobile?:boolean | undefined,
+    equality?:boolean | undefined,
 }
 
-const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, maxwidth}: Props) => {
+const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality}: Props) => {
 
     const startRoom = React.useCallback(() => {
         socket.emit("StartRoom", null, (res: Models.SocketResponse) => {
@@ -24,31 +25,40 @@ const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, maxwidth}: 
     }, [])
 
     return (
-        <View style={styles.Container}>
+        <View style={[styles.Container, {paddingVertical:mobile ? 30 : 0}]} >
             <Animatable.View animation={bounceInDown}>
                 <Image style={styles.Logo} source={require('./../assets/logo.png')} />
             </Animatable.View>
-            {Win ?
-                <Animatable.View animation={bounceIn}>
-                    <Text style={styles.WinStatut}>GAGNÉ</Text>
-                </Animatable.View>
+            {
+                equality ?
+                    (<Animatable.View animation={bounceIn}>
+                            <Text style={styles.WinStatut}>ÉGALITÉ</Text>
+                    </Animatable.View>)
                 :
-                <Animatable.View animation={bounceIn}>
-                    <Text style={styles.WinStatut}>PERDU</Text>
-                </Animatable.View>
+                    (Win ?
+                        <Animatable.View animation={bounceIn}>
+                            <Text style={styles.WinStatut}>GAGNÉ</Text>
+                        </Animatable.View>
+                        :
+                        <Animatable.View animation={bounceIn}>
+                            <Text style={styles.WinStatut}>PERDU</Text>
+                        </Animatable.View>
+                    )
+                
             }
-            
             <Animatable.View animation={bounceInRight} style={styles.PlayerList}>
                 <View style={styles.PlayerInfos1}>
-                        <Text style={styles.PlayerName1}>1.{Winner}</Text>
+                        <Text style={[styles.PlayerName, {fontSize:equality ? 30 : 36}]}>1.{Winner}</Text>
                     <View style={styles.PlayerScore1Container}>
-                        <Image style={styles.crown} source={require('./../assets/Crown.png')} />
-                        <Text style={styles.PlayerScore1}>{WinnerScore}pts</Text>
+                        {
+                            equality === false && <Image style={styles.crown} source={require('./../assets/Crown.png')} />
+                        }
+                        <Text style={[styles.PlayerScore, {fontSize:equality ? 16 : 18}, {marginLeft:equality ? 0 : 7}]}>{WinnerScore}pts</Text>
                     </View>
                 </View>
                 <View style={styles.PlayerInfos2}>
-                    <Text style={styles.PlayerName2}>2.{Loser}</Text>
-                    <Text style={styles.PlayerScore2}>{LoserScore}pts</Text>
+                    <Text style={[styles.PlayerName, {fontSize:equality ? 30 :  24}]}>2.{Loser}</Text>
+                    <Text style={[styles.PlayerScore, {fontSize:equality ? 16 : 14}]}>{LoserScore}pts</Text>
                 </View>
             </Animatable.View>
             <Animatable.View animation={bounceInUp} style={styles.Buttons}>
@@ -132,8 +142,7 @@ var styles = StyleSheet.create({
         justifyContent:'center',
         alignItems: 'center'
     },
-    PlayerName1: {
-        fontSize: 36,
+    PlayerName: {
         textAlign: 'center',
         color: '#ffffff',
         fontFamily:'Montserrat_700Bold',
@@ -145,23 +154,10 @@ var styles = StyleSheet.create({
     },
     Crown: {
     },
-    PlayerScore1: {
-        fontSize: 18,
+    PlayerScore: {
         fontFamily:'Montserrat_300Light',
-        textAlign: 'center',
+        textAlign: 'left',
         color: '#ffffff',
-        marginLeft:7,
-    },
-    PlayerScore2: {
-        fontSize: 14,
-        color: '#ffffff',
-        fontFamily:'Montserrat_300Light',
-    },
-    PlayerName2: {
-        fontSize: 24,
-        textAlign: 'center',
-        color: '#ffffff',
-        fontFamily:'Montserrat_700Bold',
     },
     PlayerInfos1: {
         marginRight:15,

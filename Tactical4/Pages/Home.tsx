@@ -103,82 +103,14 @@ const Home = () => {
             </View>
         )
     }
-    if (isTabletOrMobileDevice) {
-        return (
-            <View style={styles.container}>
-                <Animatable.View animation={bounceInLeft} style={styles.creditContainer}>
-                    <TouchableOpacity onPress={dispCredit}>
-                        <Text style={styles.credit}>Crédits</Text>
-                    </TouchableOpacity>
-                </Animatable.View>
-                <View style={styles.addpadding}>
-                    <Animatable.View animation={bounceInDown}>
-                        <Image source={logo} style={styles.logo} />
-                    </Animatable.View>
-                    <View style={styles.pageContent}>
-                        <Animatable.View animation={bounceInDown}>
-                            <TextInput
-                                style={styles.name}
-                                onChangeText={(name) => {
-                                    Cookies.set('name', name)
-                                    setName(name)
-                                }}
-                                value={name}
-                                placeholder="Nom"
-                                placeholderTextColor="#686D7F"
-                                disableFullscreenUI
-                                maxLength={10}
-                            />
-                        </Animatable.View>
-                        <Animatable.View animation={bounceInUp}>
-                            <View style={styles.footer}>
-                                <TextInput
-                                    style={styles.code}
-                                    onChangeText={(text) => setCode(text.toUpperCase())}
-                                    autoCapitalize="characters"
-                                    onSubmitEditing={joinRoom}
-                                    value={code}
-                                    maxLength={6}
-                                    placeholder="Rejoindre une partie"
-                                    placeholderTextColor="#686D7F"
-                                    disableFullscreenUI
-                                />
-                                <TouchableOpacity onPress={joinRoom}>
-                                    <View style={styles.submitArrow}>
-                                        <Image style={styles.arrow} source={require('./../assets/arrowsend.png')} />
-                                    </View>
-                                </TouchableOpacity>
-                                <Button onPress={createRoom} >Créer une partie</Button>
-                            </View>
-                        </Animatable.View>
-                    </View>
-                </View>
-                {/* <View style={styles.partend}>
-                    <DispAlert
-                    Message={"Ton adversaire a quitté la partie."}
-                    GoHome={true}
-                    />
-                </View> */}
-
-                {Credit &&
-                    <View style={styles.partend}>
-                        <Credits
-                        Close={dispCredit}
-                        />
-                    </View>
-                }
-            </View>
-            // "MjczOTE0NzM2ODA1MTUwNzMx.XzBbuQ.5qp_vG4HsWgviy25Opt9MlVTQX0"
-        )
-    }
     return (
-        <View style={styles.containercomputer}>
+        <View style={styles.container}>
             <Animatable.View animation={bounceInLeft} style={styles.creditContainer}>
                 <TouchableOpacity onPress={dispCredit}>
                     <Text style={styles.credit}>Crédits</Text>
                 </TouchableOpacity>
             </Animatable.View>
-            <View style={styles.addpaddingcomputer}>
+            <View style={[styles.addpadding, {height:isTabletOrMobileDevice? '100%' : '60%'}]}>
                 <Animatable.View animation={bounceInDown}>
                     <Image source={logo} style={styles.logo} />
                 </Animatable.View>
@@ -239,15 +171,6 @@ const Home = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: "100%",
-        color: "white",
-        // padding: 30,
-        flex: 1,
-        resizeMode: "cover",
-        alignItems: "center",
-        // backgroundColor:'green'
-    },
     containerportrait:{
         height: "100%",
         width:"100%",
@@ -267,7 +190,7 @@ const styles = StyleSheet.create({
         height:70,
         marginBottom:30,
     },
-    containercomputer: {
+    container: {
         height: "100%",
         color: "white",
         // padding: 30,
@@ -275,15 +198,13 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
         alignItems: "center",
         justifyContent:'center',
+        // backgroundColor:'green'
+        overflow:'hidden',
     },
+    //height:isTabletOrMobileDevice? '60%' : '100%'
     addpadding:{
         padding: 30,
         height:'100%',
-        alignItems: "center"
-    },
-    addpaddingcomputer:{
-        padding: 30,
-        height:'60%',
         alignItems: "center"
     },
     arrow:{
