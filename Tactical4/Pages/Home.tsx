@@ -31,7 +31,8 @@ const Home = () => {
             ...lastMessages, 
             {
                 message: message,
-                created: Date.now()
+                created: Date.now(),
+                couleur: true
             }
         ]);
     }, [setMessages])
@@ -91,6 +92,7 @@ const Home = () => {
             console.log("ERROR")
             console.log(res)
             shakeAnimatable.current.shake(600);
+            pushMessage(`Le code partie erroné.`)
         }
     }, [code])
 
@@ -286,7 +288,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         flex:1,
         left:30,
-        width: '100%',
+        width: '50%',
         height: '100%',
         // backgroundColor:'red',
         justifyContent:'flex-end',
