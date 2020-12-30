@@ -40,6 +40,8 @@ const Home = () => {
 
     const [ name, setName ] = React.useState(Cookies.get("name") || "");
     const [ code, setCode ] = React.useState("");
+
+    const shakeAnimatable = React.useRef<any>(null)
     
     const [maxwidth, setmaxwidth] = useState(false);
     React.useEffect(() => {
@@ -72,6 +74,7 @@ const Home = () => {
         } else {
             console.log("ERROR")
             console.log(res)
+            shakeAnimatable.current.shake(800);
         }
     }, [code])
 
@@ -132,22 +135,24 @@ const Home = () => {
                     </Animatable.View>
                     <Animatable.View animation={bounceInUp}>
                         <View style={styles.footer}>
-                            <TextInput
-                                style={styles.code}
-                                onChangeText={(text) => setCode(text.toUpperCase())}
-                                autoCapitalize="characters"
-                                onSubmitEditing={joinRoom}
-                                value={code}
-                                maxLength={6}
-                                placeholder="Rejoindre une partie"
-                                placeholderTextColor="#686D7F"
-                                disableFullscreenUI
-                            />
-                            <TouchableOpacity onPress={joinRoom}>
-                                <View style={styles.submitArrow}>
-                                    <Image style={styles.arrow} source={require('./../assets/arrowsend.png')} />
-                                </View>
-                            </TouchableOpacity>
+                            <Animatable.View ref={shakeAnimatable}>
+                                <TextInput
+                                    style={styles.code}
+                                    onChangeText={(text) => setCode(text.toUpperCase())}
+                                    autoCapitalize="characters"
+                                    onSubmitEditing={joinRoom}
+                                    value={code}
+                                    maxLength={6}
+                                    placeholder="Rejoindre une partie"
+                                    placeholderTextColor="#686D7F"
+                                    disableFullscreenUI
+                                />
+                                <TouchableOpacity onPress={joinRoom}>
+                                    <View style={styles.submitArrow}>
+                                        <Image style={styles.arrow} source={require('./../assets/arrowsend.png')} />
+                                    </View>
+                                </TouchableOpacity>
+                            </Animatable.View>
                             <Button onPress={createRoom} >Créer une partie</Button>
                         </View>
                     </Animatable.View>
