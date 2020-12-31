@@ -15,9 +15,10 @@ interface Props {
     Win?:boolean | undefined,
     mobile?:boolean | undefined,
     equality?:boolean | undefined,
+    quitRoom?: () => void,
 }
 
-const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality}: Props) => {
+const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality, quitRoom}: Props) => {
 
     const startRoom = React.useCallback(() => {
         socket.emit("StartRoom", null, (res: Models.SocketResponse) => {
@@ -37,6 +38,7 @@ const PartyEnd = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality
                     Win={Win}
                     mobile={mobile}
                     equality={equality}
+                    quitRoom={quitRoom}
                 />
             </Animatable.View>
         </Animatable.View>
@@ -55,7 +57,6 @@ var styles = StyleSheet.create({
         position: 'absolute',
         top:0,
         left:0,
-        backgroundColor:'rgba(4, 9, 27, 0.96)',
     },
     pannel:{
         height: "60%",
@@ -66,7 +67,6 @@ var styles = StyleSheet.create({
         alignItems: "center",
         position: 'absolute',
         left:0,
-        backgroundColor:'rgba(4, 9, 27, 0.96)',
     },
     crown:{
         width: 20,
