@@ -14,6 +14,7 @@ interface Props {
   currentPlayer: number,
   scalemuch?: boolean,
   // win: Models.WinState
+  gameState?: Models.GameState,
 }
 
 export default function Puissance4(props: Props) {
@@ -24,6 +25,7 @@ export default function Puissance4(props: Props) {
     currentPlayer,
     // win
     scalemuch,
+    gameState,
   } = props;
 
   const play = React.useCallback((column: number) => {
@@ -31,6 +33,17 @@ export default function Puissance4(props: Props) {
     const playParams : Models.PlayParams = { column }
     socket.emit("Play", playParams, (e: Models.SocketResponse) => { console.log(e)})
   }, [])
+
+  const opacityStatus = React.useCallback((columnIndex: number, rowIndex: number) => {
+    if(gameState?.win?.points){
+      const points = gameState?.win?.points
+      return points.some((point,i) => ((columnIndex === point.x) && (rowIndex === point.y))) ? 1 : 0.3
+    }else{
+      return 1
+    }
+    
+}, [gameState])
+// {opacity:opacityStatus(columnIndex,rowIndex)}
 
   const createCircle = React.useCallback(() => (
     columns.map((v, columnIndex) => (
@@ -48,8 +61,8 @@ export default function Puissance4(props: Props) {
             )
           } else {
             return (
-              <View key={"1"+ columnIndex + rowIndex} style={canPlay ? styles.circlePlace : styles.circleNoPlace} >
-                <Animatable.View animation={bounceInDownJeton} style={value === 1 ? styles.circle1 : styles.circle2} key={rowIndex}>
+              <View key={"1"+ columnIndex + rowIndex} style={[canPlay ? styles.circlePlace : styles.circleNoPlace, {opacity:opacityStatus(columnIndex,rowIndex)}]} >
+                <Animatable.View animation={bounceInDownJeton} style={[value === 1 ? styles.circle1 : styles.circle2]} key={rowIndex}>
                   <View style={value === 1 ? styles.circleInner1 : styles.circleInner2} key={rowIndex}/>
                 </Animatable.View>
               </View>

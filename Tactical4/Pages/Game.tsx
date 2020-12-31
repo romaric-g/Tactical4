@@ -39,17 +39,8 @@ const Game = () => {
     const [Back, setBack] = useState(false)
 
 
-    /////////////////
+
     const [maxwidth, setmaxwidth] = useState(false);
-    /////////////////
-    const winState = React.useMemo(() => {
-        
-        // if(true){
-        //     setTimeout(() => {return false}, 1500);
-        // }else{
-        //     setTimeout(() => {return true}, 1500);
-        // }
-    }, [gameState?.win])
 
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
@@ -134,7 +125,7 @@ const Game = () => {
     }, [gameState])
 
     const canPlay = React.useMemo(() => {
-        return currentPlayer?.id === socket.id;
+        return currentPlayer?.id === socket.id && !gameState?.win ;
     }, [gameState])
 
     const winner = React.useMemo(() => {
@@ -209,6 +200,7 @@ const Game = () => {
                             canPlay={canPlay}
                             currentPlayer={gameState.currentPlayer}
                             scalemuch={scalegrid}
+                            gameState={gameState}
                         />
                     </Animatable.View>
                     <View style={[styles.content, {justifyContent: Platform.OS === 'android' || Platform.OS === 'ios' ? 'space-between' : 'flex-start'}]}>
