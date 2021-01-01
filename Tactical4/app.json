@@ -38,7 +38,8 @@
           "include": ["react-router-native"]
         }
       },
-      "themeColor": "#04091B"
+      "themeColor": "#04091B",
+      "lang": "fr"
     }
   }
 }

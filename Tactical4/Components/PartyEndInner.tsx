@@ -5,6 +5,7 @@ import {bounceInDown, bounceInUp, bounceInRight, bounceInLeft, bounceIn, fadeIn4
 import Button from './Button';
 import socket from '../connection';
 import Models from '../types/Models';
+import { useHistory } from 'react-router';
 
 interface Props {
     Winner?: string | undefined,
@@ -14,9 +15,10 @@ interface Props {
     Win?:boolean | undefined,
     mobile?:boolean | undefined,
     equality?:boolean | undefined,
+    quitRoom?: () => void,
 }
 
-const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality}: Props) => {
+const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equality, quitRoom}: Props) => {
 
     const startRoom = React.useCallback(() => {
         socket.emit("StartRoom", null, (res: Models.SocketResponse) => {
@@ -64,6 +66,7 @@ const PartyEndInner = ({Winner, Loser, WinnerScore, LoserScore, Win, mobile, equ
             <Animatable.View delay={4000} animation={bounceInUp} style={styles.Buttons}>
                 <View style={styles.Button1}>
                     <Button
+                    onPress={quitRoom}
                     color="noir"
                     >
                         Quitter

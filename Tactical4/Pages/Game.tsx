@@ -249,6 +249,7 @@ const Game = () => {
                     LoserScore= {loserScore}
                     Win ={win}
                     equality={isEquality}
+                    quitRoom={quitRoom}
                     />
                 </View>
             }
