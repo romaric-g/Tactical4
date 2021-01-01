@@ -19,7 +19,10 @@ export default class Room {
         this.grid = new Grid(this);
     }
 
-    join(player: Player) : void {
+    join(player: Player) : boolean {
+        if (this.players.length >= 2) {
+            return false;
+        }
         if (player.room) {
             player.onLeave();
         }
@@ -31,6 +34,7 @@ export default class Room {
             playerName: player.name,
             playersName: this.getPlayersName()
         }))
+        return true;
     }
 
     leave(player: Player) : void {
