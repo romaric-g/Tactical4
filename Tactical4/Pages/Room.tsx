@@ -23,23 +23,30 @@ const Room = () => {
         query: "(max-device-width: 1224px)"  
     });
     const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 450,
+        maxDeviceWidth: 375,
         // alternatively...
-        query: "(max-device-width: 450px)"  
+        query: "(max-device-width: 375px)"  
     });
     const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
     const [maxwidth, setmaxwidth] = useState(false);
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
-            window.addEventListener('resize', (event) => {
-                if(window.innerWidth >= 450){
-                    setmaxwidth(false);
-                }else{
-                    setmaxwidth(true);
-                }
-            });
+            if(window.innerWidth >= 375){
+                setmaxwidth(false);
+            }else{
+                setmaxwidth(true);
+            }
         }
     },[]);
+    if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+        window.addEventListener('resize', (event) => {
+            if(window.innerWidth >= 375){
+                setmaxwidth(false);
+            }else{
+                setmaxwidth(true);
+            }
+        });
+    }
 
     const history = useHistory();
     const [Back, setBack] = useState(false)

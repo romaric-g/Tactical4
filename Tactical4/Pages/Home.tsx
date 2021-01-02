@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Dimensions, Platform  } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import ReactGA from 'react-ga';
@@ -43,9 +43,9 @@ const Home = () => {
         query: "(max-device-width: 1224px)"  
     });
     const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 450,
+        maxDeviceWidth: 375,
         // alternatively...
-        query: "(max-device-width: 450px)"  
+        query: "(max-device-width: 375px)"
     });
     
     
@@ -63,15 +63,22 @@ const Home = () => {
     const [maxwidth, setmaxwidth] = useState(false);
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
-            window.addEventListener('resize', (event) => {
-                if(window.innerWidth >= 450){
-                    setmaxwidth(false);
-                }else{
-                    setmaxwidth(true);
-                }
-            });
+            if(window.innerWidth >= 375){
+                setmaxwidth(false);
+            }else{
+                setmaxwidth(true);
+            }
         }
     },[]);
+    if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+        window.addEventListener('resize', (event) => {
+            if(window.innerWidth >= 375){
+                setmaxwidth(false);
+            }else{
+                setmaxwidth(true);
+            }
+        });
+    }
 
 
     const joinRoom = React.useCallback(() => {

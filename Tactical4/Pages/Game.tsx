@@ -24,9 +24,9 @@ const Game = () => {
         query: "(max-device-width: 1224px)"  
     });
     const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 450,
+        maxDeviceWidth: 375,
         // alternatively...
-        query: "(max-device-width: 450px)"  
+        query: "(max-device-width: 375px)"  
     });
     const [mobile, setmobile] = useState(true);
     const [scalegrid, setscalegrid] = useState(false);
@@ -41,6 +41,24 @@ const Game = () => {
 
 
     const [maxwidth, setmaxwidth] = useState(false);
+    React.useEffect(() => {
+        if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+            if(window.innerWidth >= 375){
+                setmaxwidth(false);
+            }else{
+                setmaxwidth(true);
+            }
+        }
+    },[]);
+    if((Platform.OS != 'android') && (Platform.OS != 'ios')){
+        window.addEventListener('resize', (event) => {
+            if(window.innerWidth >= 375){
+                setmaxwidth(false);
+            }else{
+                setmaxwidth(true);
+            }
+        });
+    }
 
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
@@ -50,7 +68,7 @@ const Game = () => {
                 }else{
                     setscalegrid(false);
                 }
-                if(window.innerWidth >= 450){
+                if(window.innerWidth >= 375){
                     setmaxwidth(false);
                 }else{
                     setmaxwidth(true);
