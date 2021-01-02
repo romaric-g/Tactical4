@@ -26,10 +26,16 @@ class PlayerController {
          })
       }
       else if(room) {
-         room.join(this.player)
-         return callback({
+         if (room.join(this.player)) {
+            return callback({
                success: true
-         })
+            })
+         } else {
+            return callback({
+               success: false,
+               message: "Impossible de rejoindre cette partie"
+            })
+         }
       } else {
          return callback({
             success: false,
