@@ -22,16 +22,10 @@ const Room = () => {
         // alternatively...
         query: "(max-device-width: 1224px)"  
     });
-    const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 375,
-        // alternatively...
-        query: "(max-device-width: 375px)"  
-    });
-    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' });
     const [maxwidth, setmaxwidth] = useState(false);
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
-            if(window.innerWidth >= 375){
+            if(window.innerWidth >= window.innerHeight){
                 setmaxwidth(false);
             }else{
                 setmaxwidth(true);
@@ -40,7 +34,7 @@ const Room = () => {
     },[]);
     if((Platform.OS != 'android') && (Platform.OS != 'ios')){
         window.addEventListener('resize', (event) => {
-            if(window.innerWidth >= 375){
+            if(window.innerWidth >= window.innerHeight){
                 setmaxwidth(false);
             }else{
                 setmaxwidth(true);
@@ -105,7 +99,7 @@ const Room = () => {
             case 'kick':
                 return pushMessage(`${ event.playerName } a été exclu de la partie.`);
             case 'leave':
-                return pushMessage(`${ event.playerName } a quitté la partie.`)
+                return pushMessage(`${ event.playerName } a quitté la partie.`);
         }
     }, [setPlayersName, pushMessage, messages])
 
@@ -114,7 +108,7 @@ const Room = () => {
     const startRoom = React.useCallback(() => {
         if (canStart) {
             socket.emit("StartRoom", null, (res: Models.SocketResponse) => {
-                console.log(res)
+                // console.log(res)
             })
         }
     }, [canStart,])
@@ -137,7 +131,7 @@ const Room = () => {
     };
     useEffect(() => {
         const backAction = () => {
-          console.log('back');
+        //   console.log('back');
           return false;
         };
     
