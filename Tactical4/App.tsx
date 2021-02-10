@@ -1,9 +1,6 @@
 import React from 'react';
 import { AppLoading } from 'expo';
 import { StyleSheet, Text, View, StatusBar,ImageBackground } from 'react-native';
-import { useFonts } from '@expo-google-fonts/suez-one';
-import { SuezOne_400Regular } from '@expo-google-fonts/suez-one';
-import { Montserrat_700Bold, Montserrat_300Light, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { NativeRouter, Route, Link } from "react-router-native";
 const image = require('./assets/tactical4background.png');
 import Home from './Pages/Home';
@@ -11,6 +8,7 @@ import Room from './Pages/Room';
 import Game from './Pages/Game';
 import socket from './connection';
 import PartyEndInner from './Components/PartyEndInner'
+
 
 const App = () => {
   return (
