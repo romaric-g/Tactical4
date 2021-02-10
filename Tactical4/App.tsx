@@ -13,18 +13,8 @@ import socket from './connection';
 import PartyEndInner from './Components/PartyEndInner'
 
 const App = () => {
-  let [fontsLoaded] = useFonts({
-    SuezOne_400Regular,
-    Montserrat_700Bold,
-    Montserrat_300Light,
-    Montserrat_400Regular,
-  });
-  
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   return (
-    <NativeRouter style={styles.bgapp}>
+    <NativeRouter>
       <ImageBackground source={image} style={styles.image}>
         <StatusBar hidden />
         <View style={styles.container}>

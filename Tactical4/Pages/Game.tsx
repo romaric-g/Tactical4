@@ -14,23 +14,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useHistory } from 'react-router';
 import LeaderBoard from '../Components/LeaderBoard';
 import EmoteButton from '../Components/Emote/EmoteButton';
-import EmoteDisplay, { EmoteDisplayRef } from '../Components/Emote/EmoteDisplay';
 
 const Game = () => {
 
     const isTabletOrMobileDevice = useMediaQuery({    
         maxDeviceWidth: 1224,
         // alternatively...
-        query: "(max-device-width: 1224px)"  
-    });
-    const haveToRotate = useMediaQuery({    
-        maxDeviceWidth: 375,
-        // alternatively...
-        query: "(max-device-width: 375px)"  
+        query: "(max-device-width: 1224px)"
     });
     const [mobile, setmobile] = useState(true);
     const [scalegrid, setscalegrid] = useState(false);
-    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
     const history = useHistory();
 
@@ -43,7 +36,7 @@ const Game = () => {
     const [maxwidth, setmaxwidth] = useState(false);
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
-            if(window.innerWidth >= 375){
+            if(window.innerWidth >= window.innerHeight){
                 setmaxwidth(false);
             }else{
                 setmaxwidth(true);
@@ -52,7 +45,7 @@ const Game = () => {
     },[]);
     if((Platform.OS != 'android') && (Platform.OS != 'ios')){
         window.addEventListener('resize', (event) => {
-            if(window.innerWidth >= 375){
+            if(window.innerWidth >= window.innerHeight){
                 setmaxwidth(false);
             }else{
                 setmaxwidth(true);
@@ -68,7 +61,7 @@ const Game = () => {
                 }else{
                     setscalegrid(false);
                 }
-                if(window.innerWidth >= 375){
+                if(window.innerWidth >= window.innerHeight){
                     setmaxwidth(false);
                 }else{
                     setmaxwidth(true);
@@ -96,19 +89,19 @@ const Game = () => {
         socket.emit("GetGameState", null, (res: Models.GetGameStateResponse) => {
             if (res.success && res.state) {
                 setGameState(res.state);
-                console.log(res.state)
+                // console.log(res.state)
             }
         })
 
         const gameStateChange = (event: Models.GameStateChangeEvent) => {
             if (event.state) {
                 setGameState(event.state)
-                console.log(event)
+                // console.log(event)
             }
         }
 
         const newEmoteSended = (event: Models.NewEmoteSendedEvent) => {
-            console.log(event)
+            // console.log(event)
             // TODO: afficher l'emote
         }
 
@@ -129,7 +122,7 @@ const Game = () => {
     }, [])
 
     const quitRoom = React.useCallback(() => {
-        console.log("QuitRoom")
+        // console.log("QuitRoom")
         socket.emit("QuitRoom", null, (e: Models.SocketResponse) => { console.log(e) })
         history.push("/")
     }, []);

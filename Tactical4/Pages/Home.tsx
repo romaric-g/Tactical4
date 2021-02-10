@@ -49,7 +49,6 @@ const Home = () => {
     });
     
     
-    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
     const history = useHistory();
     const [Credit, setCredit] = useState(false)
@@ -63,7 +62,7 @@ const Home = () => {
     const [maxwidth, setmaxwidth] = useState(false);
     React.useEffect(() => {
         if((Platform.OS != 'android') && (Platform.OS != 'ios')){
-            if(window.innerWidth >= 375){
+            if(window.innerWidth >= window.innerHeight){
                 setmaxwidth(false);
             }else{
                 setmaxwidth(true);
@@ -72,7 +71,7 @@ const Home = () => {
     },[]);
     if((Platform.OS != 'android') && (Platform.OS != 'ios')){
         window.addEventListener('resize', (event) => {
-            if(window.innerWidth >= 375){
+            if(window.innerWidth >= window.innerHeight){
                 setmaxwidth(false);
             }else{
                 setmaxwidth(true);
@@ -93,11 +92,11 @@ const Home = () => {
 
     const joinRoomResponse = React.useCallback((res: Models.SocketResponse) => {
         if (res.success) {
-            console.log('SUCCESS')
+            // console.log('SUCCESS')
             history.push(`/room/${code}`)
         } else {
-            console.log("ERROR")
-            console.log(res)
+            // console.log("ERROR")
+            // console.log(res)
             shakeAnimatable.current.shake(600);
             pushMessage(`Le code partie erroné.`)
         }
@@ -114,11 +113,11 @@ const Home = () => {
 
     const createRoomResponse = React.useCallback((res: Models.CreateRoomResponse) => {
         if(res.success) {
-            console.log(res)
+            // console.log(res)
             history.push(`/room/${res.code}`)
         } else {
-            console.log("ERROR")
-            console.log(res)
+            // console.log("ERROR")
+            // console.log(res)
         }
     }, [])
     const dispCredit= () => {
