@@ -286,7 +286,7 @@ const Game = () => {
             {gameState.leave &&
                 <View style={styles.partend}>
                     <DispAlert
-                        message={"Votre adversaire a quitter la partie"}
+                        message={"Votre adversaire a quitté la partie"}
                         type="forceHome"
                         quitRoom={quitRoom}
                         dispBack={dispBack}
