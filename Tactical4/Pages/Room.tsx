@@ -204,7 +204,12 @@ const Room = () => {
                                     </TouchableOpacity> 
                                     <View style={styles.secondePartieInput}>
                                         <View style={styles.traitSeparationInput}></View>
-                                        <TouchableOpacity onPress={() => pushMessage(`Le code a été copié.`)}> 
+                                        <TouchableOpacity onPress={() => {
+                                            let codeInput = document.querySelector(`[value="${params.code}"]`);
+                                            codeInput.select();
+                                            document.execCommand("copy");
+                                            pushMessage(`Le code a été copié.`);
+                                        }}> 
                                             <Image
                                                 resizeMode="contain"
                                                 style={styles.shareIcon} 
